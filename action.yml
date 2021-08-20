@@ -1,11 +1,19 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Zeet Deploy'
+description: 'Deploy your Project with Zeet'
+author: 'Zeet'
 inputs:
-  milliseconds: # change this
+  deploy_key:
+    description: 'Zeet deploy key'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  project_name:
+    description: 'Zeet project name'
+    required: true
+  image:
+    description: 'docker image to deploy'
+    required: true
+outputs:
+  link:
+    description: 'Link to deployment'
 runs:
   using: 'node12'
   main: 'dist/index.js'

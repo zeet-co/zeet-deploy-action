@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
+  "name": "zeet-deploy-action",
+  "version": "0.0.1",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Zeet Deploy Action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/zeet-co/zeet-deploy-action.git"
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "zeet",
+    "deploy"
   ],
-  "author": "",
+  "author": "Zeet",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.4.0"
