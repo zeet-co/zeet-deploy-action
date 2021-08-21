@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          deploy_key: "key"
-          project_name: "test"
-          image: "nginx:latest"
+          api_url: "http://localhost:3000"
+          deploy_key: "test_key"
+          project_id: "project_id"
+          image: "image:latest"
