@@ -25,3 +25,4 @@ jobs:
           deploy_key: "test_key"
           project_id: "project_id"
           image: "image:latest"
+        continue-on-error: true
