@@ -36,7 +36,7 @@
     "@graphql-codegen/fragment-matcher": "^3.1.0",
     "@graphql-codegen/typescript-graphql-files-modules": "^2.1.0",
     "@graphql-codegen/typescript-graphql-request": "^4.1.0",
-    "@graphql-codegen/typescript-operations": "^2.1.0",
+    "@graphql-codegen/typescript-operations": "^2.1.1",
     "@types/node": "^16.6.2",
     "@typescript-eslint/parser": "^4.29.2",
     "@vercel/ncc": "^0.29.2",
