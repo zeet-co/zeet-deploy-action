@@ -27,11 +27,13 @@ async function run(): Promise<void> {
       }
     })
 
+    const link = `https://zeet.co/repo/${result.updateProject?.id}/deployments/${result?.updateProject?.productionDeployment?.id}`
+
+    core.info(`${image} Deployed!`)
+    core.info(`Zeet Dashboard: ${link}`)
     core.debug(new Date().toTimeString())
-    core.setOutput(
-      'link',
-      `https://zeet.co/repo/${result.updateProject?.id}/deployments/${result?.updateProject?.productionDeployment?.id}`
-    )
+
+    core.setOutput('link', link)
   } catch (error) {
     core.setFailed(error.message)
   }
