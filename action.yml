@@ -12,8 +12,11 @@ inputs:
     description: "Zeet project id"
     required: true
   image:
-    description: "docker image to deploy"
-    required: true
+    description: "Docker image to deploy"
+    required: false
+  branch:
+    description: "Git branch to deploy"
+    required: false
 outputs:
   link:
     description: "Link to deployment"

@@ -207,7 +207,7 @@ export type CheckPriceInput = {
   dockerImage?: Maybe<Scalars['String']>;
   volumes?: Maybe<Scalars['JSON']>;
   ports?: Maybe<Scalars['JSON']>;
-  replication?: Maybe<Scalars['JSON']>;
+  replication?: Maybe<Array<ReplicationInput>>;
   cpu?: Maybe<Scalars['String']>;
   gpu?: Maybe<Scalars['String']>;
   memory?: Maybe<Scalars['String']>;
@@ -267,11 +267,24 @@ export enum ClusterState {
   Error = 'ERROR'
 }
 
+export type Container = {
+  __typename?: 'Container';
+  id: Scalars['UUID'];
+  status: ContainerStatus;
+};
+
 export type ContainerSpec = {
   __typename?: 'ContainerSpec';
   cpu?: Maybe<Scalars['Float']>;
   memory?: Maybe<Scalars['Float']>;
   gpu?: Maybe<Scalars['Float']>;
+};
+
+export type ContainerStatus = {
+  __typename?: 'ContainerStatus';
+  scheduled: Scalars['Boolean'];
+  running: Scalars['Boolean'];
+  ready: Scalars['Boolean'];
 };
 
 export type CreateApiKeyInput = {
@@ -286,6 +299,11 @@ export type CreateClusterInput = {
   region: Scalars['String'];
 };
 
+export type CreateDatadogIntegrationInput = {
+  userID: Scalars['UUID'];
+  apiKey: Scalars['String'];
+};
+
 export type CreateProjectDockerInput = {
   teamID?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -293,7 +311,7 @@ export type CreateProjectDockerInput = {
   dockerImage: Scalars['String'];
   envs?: Maybe<Array<EnvVarInput>>;
   ports?: Maybe<Scalars['JSON']>;
-  replication?: Maybe<Scalars['JSON']>;
+  replication?: Maybe<Array<ReplicationInput>>;
   volumes?: Maybe<Scalars['JSON']>;
   cpu?: Maybe<Scalars['String']>;
   memory?: Maybe<Scalars['String']>;
@@ -329,7 +347,7 @@ export type CreateProjectInput = {
   repo: Scalars['String'];
   envs?: Maybe<Array<EnvVarInput>>;
   ports?: Maybe<Scalars['JSON']>;
-  replication?: Maybe<Scalars['JSON']>;
+  replication?: Maybe<Array<ReplicationInput>>;
   volumes?: Maybe<Scalars['JSON']>;
   cpu?: Maybe<Scalars['String']>;
   memory?: Maybe<Scalars['String']>;
@@ -377,12 +395,26 @@ export type CustomDomain = {
   certificate?: Maybe<Certificate>;
 };
 
+export type DatadogIntegration = Integration & {
+  __typename?: 'DatadogIntegration';
+  id: Scalars['UUID'];
+  type: IntegrationType;
+  name: Scalars['String'];
+  description: Scalars['String'];
+  image: Scalars['String'];
+  createdAt: Scalars['Time'];
+  updatedAt: Scalars['Time'];
+  apiKey?: Maybe<Scalars['String']>;
+};
+
 export type DeployStatus = {
   __typename?: 'DeployStatus';
   active: Scalars['Boolean'];
-  replicas: Scalars['Int'];
   publicIPs?: Maybe<Array<Scalars['String']>>;
   state: Scalars['String'];
+  replicas: Scalars['Int'];
+  runningReplicas: Scalars['Int'];
+  readyReplicas: Scalars['Int'];
 };
 
 export enum DeployStrategy {
@@ -412,6 +444,7 @@ export type Deployment = {
   logs?: Maybe<Array<LogEntry>>;
   repo?: Maybe<Repo>;
   deployStatus?: Maybe<DeployStatus>;
+  containers?: Maybe<Array<Container>>;
   metrics?: Maybe<Array<Metric>>;
   volumes?: Maybe<Array<Volume>>;
   awsLinks?: Maybe<AwsLinks>;
@@ -667,7 +700,8 @@ export enum IntegrationType {
   Slack = 'SLACK',
   SlackWebhook = 'SLACK_WEBHOOK',
   Discord = 'DISCORD',
-  DiscordWebhook = 'DISCORD_WEBHOOK'
+  DiscordWebhook = 'DISCORD_WEBHOOK',
+  Datadog = 'DATADOG'
 }
 
 
@@ -752,6 +786,7 @@ export type Mutation = {
   copyEnvVars?: Maybe<Repo>;
   createAPIKey: ApiKey;
   createCluster: Cluster;
+  createDatadogIntegration: DatadogIntegration;
   createDiscordWebhookIntegration: DiscordWebhookIntegration;
   createProject: Repo;
   createProjectDocker: Repo;
@@ -845,6 +880,11 @@ export type MutationCreateApiKeyArgs = {
 
 export type MutationCreateClusterArgs = {
   input: CreateClusterInput;
+};
+
+
+export type MutationCreateDatadogIntegrationArgs = {
+  input: CreateDatadogIntegrationInput;
 };
 
 
@@ -1591,7 +1631,7 @@ export type UpdateProjectInput = {
   id: Scalars['ID'];
   volumes?: Maybe<Scalars['JSON']>;
   ports?: Maybe<Scalars['JSON']>;
-  replication?: Maybe<Scalars['JSON']>;
+  replication?: Maybe<Array<ReplicationInput>>;
   dockerImage?: Maybe<Scalars['String']>;
   buildType?: Maybe<Scalars['String']>;
   dockerfilePath?: Maybe<Scalars['String']>;
@@ -1610,10 +1650,13 @@ export type UpdateProjectInput = {
   startupProbe?: Maybe<ProbeInput>;
   autoscaling?: Maybe<AutoscalingInput>;
   autoscalingDelete?: Maybe<Scalars['Boolean']>;
+  preStopSleep?: Maybe<Scalars['Int']>;
+  terminationGracePeriodSeconds?: Maybe<Scalars['Int']>;
   tpu?: Maybe<TpuInput>;
   tpuDelete?: Maybe<Scalars['Boolean']>;
   hostNetwork?: Maybe<Scalars['Boolean']>;
   staticIP?: Maybe<Scalars['Boolean']>;
+  iamPolicies?: Maybe<Array<Scalars['String']>>;
   manualDeploy?: Maybe<Scalars['Boolean']>;
   deployBranch?: Maybe<Scalars['Boolean']>;
   deployStrategy?: Maybe<DeployStrategy>;
@@ -1667,6 +1710,7 @@ export type User = ProjectOwner & {
   freeQuota?: Maybe<Scalars['Int']>;
   freeTrialEndsAt?: Maybe<Scalars['Time']>;
   paymentError?: Maybe<Scalars['String']>;
+  paymentAuthorizationError?: Maybe<Scalars['String']>;
   teams?: Maybe<Array<UserTeamEdge>>;
   team?: Maybe<Team>;
   repos?: Maybe<Array<Repo>>;
@@ -1783,6 +1827,8 @@ export type Web3Challenge = {
   nonce: Scalars['String'];
 };
 
+export type DeployResultFragment = { __typename?: 'Repo', id: string, productionDeployment?: Maybe<{ __typename?: 'Deployment', id: string }> };
+
 export type UpdateProjectMutationVariables = Exact<{
   input: UpdateProjectInput;
 }>;
@@ -1790,17 +1836,36 @@ export type UpdateProjectMutationVariables = Exact<{
 
 export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Repo', id: string, productionDeployment?: Maybe<{ __typename?: 'Deployment', id: string }> } };
 
+export type DeployBranchMutationVariables = Exact<{
+  id: Scalars['ID'];
+  branch?: Maybe<Scalars['String']>;
+}>;
 
-export const UpdateProjectDocument = gql`
-    mutation UpdateProject($input: UpdateProjectInput!) {
-  updateProject(input: $input) {
+
+export type DeployBranchMutation = { __typename?: 'Mutation', buildRepo: { __typename?: 'Repo', id: string, productionDeployment?: Maybe<{ __typename?: 'Deployment', id: string }> } };
+
+export const DeployResultFragmentDoc = gql`
+    fragment DeployResult on Repo {
+  id
+  productionDeployment {
     id
-    productionDeployment {
-      id
-    }
   }
 }
     `;
+export const UpdateProjectDocument = gql`
+    mutation UpdateProject($input: UpdateProjectInput!) {
+  updateProject(input: $input) {
+    ...DeployResult
+  }
+}
+    ${DeployResultFragmentDoc}`;
+export const DeployBranchDocument = gql`
+    mutation DeployBranch($id: ID!, $branch: String) {
+  buildRepo(id: $id, branch: $branch) {
+    ...DeployResult
+  }
+}
+    ${DeployResultFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -1811,6 +1876,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     UpdateProject(variables: UpdateProjectMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateProjectMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateProjectMutation>(UpdateProjectDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateProject');
+    },
+    DeployBranch(variables: DeployBranchMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeployBranchMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeployBranchMutation>(DeployBranchDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeployBranch');
     }
   };
 }
@@ -1831,6 +1899,7 @@ export type Sdk = ReturnType<typeof getSdk>;
       "GitHubRepository"
     ],
     "Integration": [
+      "DatadogIntegration",
       "DiscordIntegration",
       "DiscordWebhookIntegration",
       "SlackIntegration",

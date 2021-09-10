@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
-
 import {GraphQLClient} from 'graphql-request'
-import {getSdk} from './generated/graphql'
+import {DeployResultFragment, getSdk} from './generated/graphql'
 
 async function run(): Promise<void> {
   try {
@@ -11,6 +10,7 @@ async function run(): Promise<void> {
     const token = core.getInput('deploy_key')
     const projectId = core.getInput('project_id')
     const image = core.getInput('image')
+    const branch = core.getInput('branch')
 
     const graphQLClient = new GraphQLClient(endpoint, {
       headers: {
@@ -20,20 +20,36 @@ async function run(): Promise<void> {
 
     const sdk = getSdk(graphQLClient)
 
-    const result = await sdk.UpdateProject({
-      input: {
+    let deployResult = {} as DeployResultFragment
+
+    if (image) {
+      const result = await sdk.UpdateProject({
+        input: {
+          id: projectId,
+          dockerImage: image
+        }
+      })
+      core.info(`${image} Deployed!`)
+
+      deployResult = result?.updateProject
+    } else if (branch) {
+      const result = await sdk.DeployBranch({
         id: projectId,
-        dockerImage: image
-      }
-    })
+        branch
+      })
+      core.info(`${branch} Deployed!`)
 
-    const link = `https://zeet.co/repo/${result.updateProject?.id}/deployments/${result?.updateProject?.productionDeployment?.id}`
+      deployResult = result?.buildRepo
+    } else {
+      core.error('invalid input, image or branch required')
+    }
 
-    core.info(`${image} Deployed!`)
+    const link = `https://zeet.co/repo/${deployResult?.id}/deployments/${deployResult?.productionDeployment?.id}`
+
     core.info(`Zeet Dashboard: ${link}`)
-    core.debug(new Date().toTimeString())
-
     core.setOutput('link', link)
+
+    core.debug(new Date().toTimeString())
   } catch (error) {
     core.setFailed(error.message)
   }

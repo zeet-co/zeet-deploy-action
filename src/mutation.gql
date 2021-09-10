@@ -1,8 +1,18 @@
+fragment DeployResult on Repo {
+  id
+  productionDeployment {
+    id
+  }
+}
+
 mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
-    id
-    productionDeployment {
-      id
-    }
+    ...DeployResult
+  }
+}
+
+mutation DeployBranch($id: ID!, $branch: String) {
+  buildRepo(id: $id, branch: $branch) {
+    ...DeployResult
   }
 }
