@@ -10,7 +10,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSdk = exports.UpdateProjectDocument = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.IntegrationType = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.BuildType = exports.BuildState = exports.AwsAccountState = void 0;
+exports.getSdk = exports.DeployBranchDocument = exports.UpdateProjectDocument = exports.DeployResultFragmentDoc = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.IntegrationType = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.BuildType = exports.BuildState = exports.AwsAccountState = void 0;
 const graphql_tag_1 = __importDefault(__nccwpck_require__(8435));
 var AwsAccountState;
 (function (AwsAccountState) {
@@ -122,6 +122,7 @@ var IntegrationType;
     IntegrationType["SlackWebhook"] = "SLACK_WEBHOOK";
     IntegrationType["Discord"] = "DISCORD";
     IntegrationType["DiscordWebhook"] = "DISCORD_WEBHOOK";
+    IntegrationType["Datadog"] = "DATADOG";
 })(IntegrationType = exports.IntegrationType || (exports.IntegrationType = {}));
 var LogShipperType;
 (function (LogShipperType) {
@@ -181,21 +182,36 @@ var UserAction;
     UserAction["ReadPrivate"] = "READ_PRIVATE";
     UserAction["EditBilling"] = "EDIT_BILLING";
 })(UserAction = exports.UserAction || (exports.UserAction = {}));
-exports.UpdateProjectDocument = graphql_tag_1.default `
-    mutation UpdateProject($input: UpdateProjectInput!) {
-  updateProject(input: $input) {
+exports.DeployResultFragmentDoc = (0, graphql_tag_1.default) `
+    fragment DeployResult on Repo {
+  id
+  productionDeployment {
     id
-    productionDeployment {
-      id
-    }
   }
 }
     `;
+exports.UpdateProjectDocument = (0, graphql_tag_1.default) `
+    mutation UpdateProject($input: UpdateProjectInput!) {
+  updateProject(input: $input) {
+    ...DeployResult
+  }
+}
+    ${exports.DeployResultFragmentDoc}`;
+exports.DeployBranchDocument = (0, graphql_tag_1.default) `
+    mutation DeployBranch($id: ID!, $branch: String) {
+  buildRepo(id: $id, branch: $branch) {
+    ...DeployResult
+  }
+}
+    ${exports.DeployResultFragmentDoc}`;
 const defaultWrapper = (action, _operationName) => action();
 function getSdk(client, withWrapper = defaultWrapper) {
     return {
         UpdateProject(variables, requestHeaders) {
             return withWrapper((wrappedRequestHeaders) => client.request(exports.UpdateProjectDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'UpdateProject');
+        },
+        DeployBranch(variables, requestHeaders) {
+            return withWrapper((wrappedRequestHeaders) => client.request(exports.DeployBranchDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'DeployBranch');
         }
     };
 }
@@ -210,6 +226,7 @@ const result = {
             "GitHubRepository"
         ],
         "Integration": [
+            "DatadogIntegration",
             "DiscordIntegration",
             "DiscordWebhookIntegration",
             "SlackIntegration",
@@ -263,30 +280,51 @@ const core = __importStar(__nccwpck_require__(2186));
 const graphql_request_1 = __nccwpck_require__(2476);
 const graphql_1 = __nccwpck_require__(9088);
 function run() {
-    var _a, _b, _c;
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const endpoint = core.getInput('api_url') || 'https://anchor.zeet.co/graphql';
             const token = core.getInput('deploy_key');
             const projectId = core.getInput('project_id');
             const image = core.getInput('image');
+            const branch = core.getInput('branch');
             const graphQLClient = new graphql_request_1.GraphQLClient(endpoint, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
             });
-            const sdk = graphql_1.getSdk(graphQLClient);
-            const result = yield sdk.UpdateProject({
-                input: {
+            const sdk = (0, graphql_1.getSdk)(graphQLClient);
+            let deployResult = {};
+            if (image) {
+                const result = yield sdk.UpdateProject({
+                    input: {
+                        id: projectId,
+                        dockerImage: image
+                    }
+                });
+                core.info(`${image} Deployed!`);
+                deployResult = result === null || result === void 0 ? void 0 : result.updateProject;
+            }
+            else if (branch) {
+                const result = yield sdk.DeployBranch({
                     id: projectId,
-                    dockerImage: image
-                }
-            });
+                    branch
+                });
+                core.info(`${branch} Deployed!`);
+                deployResult = result === null || result === void 0 ? void 0 : result.buildRepo;
+            }
+            else {
+                core.error('invalid input, image or branch required');
+            }
+            const link = `https://zeet.co/repo/${deployResult === null || deployResult === void 0 ? void 0 : deployResult.id}/deployments/${(_a = deployResult === null || deployResult === void 0 ? void 0 : deployResult.productionDeployment) === null || _a === void 0 ? void 0 : _a.id}`;
+            core.info(`Zeet Dashboard: ${link}`);
+            core.setOutput('link', link);
             core.debug(new Date().toTimeString());
-            core.setOutput('link', `https://zeet.co/repo/${(_a = result.updateProject) === null || _a === void 0 ? void 0 : _a.id}/deployments/${(_c = (_b = result === null || result === void 0 ? void 0 : result.updateProject) === null || _b === void 0 ? void 0 : _b.productionDeployment) === null || _c === void 0 ? void 0 : _c.id}`);
         }
         catch (error) {
-            core.setFailed(error.message);
+            if (error instanceof Error) {
+                core.setFailed(error.message);
+            }
         }
     });
 }
@@ -12527,6 +12565,7 @@ var GraphQLInputObjectType = /*#__PURE__*/function () {
         description: field.description,
         type: field.type,
         defaultValue: field.defaultValue,
+        deprecationReason: field.deprecationReason,
         extensions: field.extensions,
         astNode: field.astNode
       };
@@ -23267,7 +23306,7 @@ exports.versionInfo = exports.version = void 0;
 /**
  * A string containing the version of the GraphQL.js library
  */
-var version = '15.5.1';
+var version = '15.6.0';
 /**
  * An object containing the components of the GraphQL.js version string
  */
@@ -23275,8 +23314,8 @@ var version = '15.5.1';
 exports.version = version;
 var versionInfo = Object.freeze({
   major: 15,
-  minor: 5,
-  patch: 1,
+  minor: 6,
+  patch: 0,
   preReleaseTag: null
 });
 exports.versionInfo = versionInfo;
