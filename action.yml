@@ -8,14 +8,20 @@ inputs:
   deploy_key:
     description: "Zeet deploy key"
     required: true
+  project:
+    description: "Zeet project name"
+    required: false
   project_id:
     description: "Zeet project id"
-    required: true
+    required: false
   image:
     description: "Docker image to deploy"
     required: false
   branch:
     description: "Git branch to deploy"
+    required: false
+  wait:
+    description: "Wait till the deploy finishes"
     required: false
 outputs:
   link:

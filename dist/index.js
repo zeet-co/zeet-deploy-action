@@ -10,59 +10,68 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSdk = exports.DeployBranchDocument = exports.UpdateProjectDocument = exports.DeployResultFragmentDoc = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.IntegrationType = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.BuildType = exports.BuildState = exports.AwsAccountState = void 0;
+exports.getSdk = exports.GetDeploymentDocument = exports.DeployBranchDocument = exports.UpdateProjectDocument = exports.GetProjectDocument = exports.DeployResultFragmentDoc = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.JobRunState = exports.IntegrationType = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.BuildType = exports.BuildState = exports.AutoscalingType = exports.AwsAccountState = void 0;
 const graphql_tag_1 = __importDefault(__nccwpck_require__(8435));
 var AwsAccountState;
 (function (AwsAccountState) {
-    AwsAccountState["Waiting"] = "WAITING";
-    AwsAccountState["Success"] = "SUCCESS";
     AwsAccountState["Error"] = "ERROR";
+    AwsAccountState["Success"] = "SUCCESS";
+    AwsAccountState["Waiting"] = "WAITING";
 })(AwsAccountState = exports.AwsAccountState || (exports.AwsAccountState = {}));
+var AutoscalingType;
+(function (AutoscalingType) {
+    AutoscalingType["Cpu"] = "CPU";
+    AutoscalingType["Custom"] = "CUSTOM";
+    AutoscalingType["Memory"] = "MEMORY";
+    AutoscalingType["Prometheus"] = "PROMETHEUS";
+})(AutoscalingType = exports.AutoscalingType || (exports.AutoscalingType = {}));
 var BuildState;
 (function (BuildState) {
-    BuildState["BuildPending"] = "BUILD_PENDING";
-    BuildState["BuildInProgress"] = "BUILD_IN_PROGRESS";
     BuildState["BuildFailed"] = "BUILD_FAILED";
+    BuildState["BuildInProgress"] = "BUILD_IN_PROGRESS";
+    BuildState["BuildStarting"] = "BUILD_STARTING";
+    BuildState["BuildSucceeded"] = "BUILD_SUCCEEDED";
 })(BuildState = exports.BuildState || (exports.BuildState = {}));
 var BuildType;
 (function (BuildType) {
-    BuildType["Docker"] = "DOCKER";
     BuildType["Buildpacks"] = "BUILDPACKS";
-    BuildType["Python"] = "PYTHON";
-    BuildType["PythonDjango"] = "PYTHON_DJANGO";
-    BuildType["Node"] = "NODE";
-    BuildType["NodeStatic"] = "NODE_STATIC";
-    BuildType["NodeNextjs"] = "NODE_NEXTJS";
-    BuildType["Ubuntu"] = "UBUNTU";
+    BuildType["Docker"] = "DOCKER";
     BuildType["ElixirPhoenix"] = "ELIXIR_PHOENIX";
     BuildType["GolangModules"] = "GOLANG_MODULES";
     BuildType["Herokuish"] = "HEROKUISH";
+    BuildType["Node"] = "NODE";
+    BuildType["NodeNextjs"] = "NODE_NEXTJS";
+    BuildType["NodeNextjs_14"] = "NODE_NEXTJS_14";
+    BuildType["NodeStatic"] = "NODE_STATIC";
+    BuildType["Python"] = "PYTHON";
+    BuildType["PythonDjango"] = "PYTHON_DJANGO";
+    BuildType["Ubuntu"] = "UBUNTU";
 })(BuildType = exports.BuildType || (exports.BuildType = {}));
 var CloudProvider;
 (function (CloudProvider) {
-    CloudProvider["Unknown"] = "UNKNOWN";
     CloudProvider["Aws"] = "AWS";
     CloudProvider["Gpc"] = "GPC";
+    CloudProvider["Unknown"] = "UNKNOWN";
 })(CloudProvider = exports.CloudProvider || (exports.CloudProvider = {}));
 var ClusterProvider;
 (function (ClusterProvider) {
-    ClusterProvider["Generic"] = "GENERIC";
     ClusterProvider["Eks"] = "EKS";
+    ClusterProvider["Generic"] = "GENERIC";
     ClusterProvider["Gke"] = "GKE";
 })(ClusterProvider = exports.ClusterProvider || (exports.ClusterProvider = {}));
 var ClusterState;
 (function (ClusterState) {
     ClusterState["Creating"] = "CREATING";
-    ClusterState["Healthy"] = "HEALTHY";
     ClusterState["Error"] = "ERROR";
+    ClusterState["Healthy"] = "HEALTHY";
 })(ClusterState = exports.ClusterState || (exports.ClusterState = {}));
 var DeployStrategy;
 (function (DeployStrategy) {
+    DeployStrategy["BlueGreen"] = "BLUE_GREEN";
+    DeployStrategy["Canary"] = "CANARY";
+    DeployStrategy["RedBlack"] = "RED_BLACK";
     DeployStrategy["Restart"] = "RESTART";
     DeployStrategy["Rolling"] = "ROLLING";
-    DeployStrategy["Canary"] = "CANARY";
-    DeployStrategy["BlueGreen"] = "BLUE_GREEN";
-    DeployStrategy["RedBlack"] = "RED_BLACK";
 })(DeployStrategy = exports.DeployStrategy || (exports.DeployStrategy = {}));
 var DeployTarget;
 (function (DeployTarget) {
@@ -71,74 +80,82 @@ var DeployTarget;
 })(DeployTarget = exports.DeployTarget || (exports.DeployTarget = {}));
 var DeploymentStatus;
 (function (DeploymentStatus) {
-    DeploymentStatus["BuildPending"] = "BUILD_PENDING";
-    DeploymentStatus["BuildInProgress"] = "BUILD_IN_PROGRESS";
     DeploymentStatus["BuildFailed"] = "BUILD_FAILED";
-    DeploymentStatus["DeployInProgress"] = "DEPLOY_IN_PROGRESS";
-    DeploymentStatus["DeployFailed"] = "DEPLOY_FAILED";
-    DeploymentStatus["DeploySucceeded"] = "DEPLOY_SUCCEEDED";
-    DeploymentStatus["DeployHealhty"] = "DEPLOY_HEALHTY";
+    DeploymentStatus["BuildInProgress"] = "BUILD_IN_PROGRESS";
+    DeploymentStatus["BuildPending"] = "BUILD_PENDING";
+    DeploymentStatus["BuildSucceeded"] = "BUILD_SUCCEEDED";
     DeploymentStatus["DeployCrashing"] = "DEPLOY_CRASHING";
+    DeploymentStatus["DeployFailed"] = "DEPLOY_FAILED";
+    DeploymentStatus["DeployHealhty"] = "DEPLOY_HEALHTY";
+    DeploymentStatus["DeployInProgress"] = "DEPLOY_IN_PROGRESS";
     DeploymentStatus["DeployStopped"] = "DEPLOY_STOPPED";
+    DeploymentStatus["DeploySucceeded"] = "DEPLOY_SUCCEEDED";
 })(DeploymentStatus = exports.DeploymentStatus || (exports.DeploymentStatus = {}));
 var DisableReason;
 (function (DisableReason) {
     DisableReason["FreeTrialEnded"] = "FREE_TRIAL_ENDED";
-    DisableReason["UserAction"] = "USER_ACTION";
     DisableReason["PaymentError"] = "PAYMENT_ERROR";
+    DisableReason["UserAction"] = "USER_ACTION";
     DisableReason["UserBanned"] = "USER_BANNED";
 })(DisableReason = exports.DisableReason || (exports.DisableReason = {}));
 var ErrorCode;
 (function (ErrorCode) {
     ErrorCode["CardDeclined"] = "CardDeclined";
-    ErrorCode["NoContainers"] = "NoContainers";
+    ErrorCode["InternalServerError"] = "InternalServerError";
     ErrorCode["NeedAuth"] = "NeedAuth";
     ErrorCode["NeedPaymentDetails"] = "NeedPaymentDetails";
     ErrorCode["NoActiveBuildMethodError"] = "NoActiveBuildMethodError";
+    ErrorCode["NoContainers"] = "NoContainers";
     ErrorCode["NoDockerfilePresent"] = "NoDockerfilePresent";
     ErrorCode["NoPortsExposed"] = "NoPortsExposed";
-    ErrorCode["InternalServerError"] = "InternalServerError";
 })(ErrorCode = exports.ErrorCode || (exports.ErrorCode = {}));
 var GcpAccountState;
 (function (GcpAccountState) {
-    GcpAccountState["Waiting"] = "WAITING";
-    GcpAccountState["Success"] = "SUCCESS";
     GcpAccountState["Error"] = "ERROR";
+    GcpAccountState["Success"] = "SUCCESS";
+    GcpAccountState["Waiting"] = "WAITING";
 })(GcpAccountState = exports.GcpAccountState || (exports.GcpAccountState = {}));
 var GitProvider;
 (function (GitProvider) {
+    GitProvider["Bitbucket"] = "BITBUCKET";
     GitProvider["Github"] = "GITHUB";
     GitProvider["Gitlab"] = "GITLAB";
-    GitProvider["Bitbucket"] = "BITBUCKET";
 })(GitProvider = exports.GitProvider || (exports.GitProvider = {}));
 var GithubUserType;
 (function (GithubUserType) {
-    GithubUserType["User"] = "User";
     GithubUserType["Organization"] = "Organization";
+    GithubUserType["User"] = "User";
 })(GithubUserType = exports.GithubUserType || (exports.GithubUserType = {}));
 var IntegrationType;
 (function (IntegrationType) {
-    IntegrationType["Slack"] = "SLACK";
-    IntegrationType["SlackWebhook"] = "SLACK_WEBHOOK";
+    IntegrationType["Datadog"] = "DATADOG";
     IntegrationType["Discord"] = "DISCORD";
     IntegrationType["DiscordWebhook"] = "DISCORD_WEBHOOK";
-    IntegrationType["Datadog"] = "DATADOG";
+    IntegrationType["Slack"] = "SLACK";
+    IntegrationType["SlackWebhook"] = "SLACK_WEBHOOK";
 })(IntegrationType = exports.IntegrationType || (exports.IntegrationType = {}));
+var JobRunState;
+(function (JobRunState) {
+    JobRunState["JobRunFailed"] = "JOB_RUN_FAILED";
+    JobRunState["JobRunRunning"] = "JOB_RUN_RUNNING";
+    JobRunState["JobRunStarting"] = "JOB_RUN_STARTING";
+    JobRunState["JobRunSucceeded"] = "JOB_RUN_SUCCEEDED";
+})(JobRunState = exports.JobRunState || (exports.JobRunState = {}));
 var LogShipperType;
 (function (LogShipperType) {
+    LogShipperType["Logdna"] = "LOGDNA";
     LogShipperType["Logzio"] = "LOGZIO";
     LogShipperType["Syslog"] = "SYSLOG";
-    LogShipperType["Logdna"] = "LOGDNA";
 })(LogShipperType = exports.LogShipperType || (exports.LogShipperType = {}));
 var PlanBillingPeriod;
 (function (PlanBillingPeriod) {
-    PlanBillingPeriod["Monthly"] = "MONTHLY";
     PlanBillingPeriod["Annually"] = "ANNUALLY";
+    PlanBillingPeriod["Monthly"] = "MONTHLY";
 })(PlanBillingPeriod = exports.PlanBillingPeriod || (exports.PlanBillingPeriod = {}));
 var PlanTier;
 (function (PlanTier) {
-    PlanTier["Legacy"] = "LEGACY";
     PlanTier["Basic"] = "BASIC";
+    PlanTier["Legacy"] = "LEGACY";
     PlanTier["Pro"] = "PRO";
 })(PlanTier = exports.PlanTier || (exports.PlanTier = {}));
 var PortProtocol;
@@ -148,44 +165,52 @@ var PortProtocol;
 })(PortProtocol = exports.PortProtocol || (exports.PortProtocol = {}));
 var ProjectCollaboratorRole;
 (function (ProjectCollaboratorRole) {
-    ProjectCollaboratorRole["Owner"] = "OWNER";
     ProjectCollaboratorRole["Editor"] = "EDITOR";
+    ProjectCollaboratorRole["Owner"] = "OWNER";
     ProjectCollaboratorRole["Viewer"] = "VIEWER";
 })(ProjectCollaboratorRole = exports.ProjectCollaboratorRole || (exports.ProjectCollaboratorRole = {}));
 var RepoSourceType;
 (function (RepoSourceType) {
+    RepoSourceType["Docker"] = "DOCKER";
+    RepoSourceType["DockerHub"] = "DOCKER_HUB";
+    RepoSourceType["Git"] = "GIT";
     RepoSourceType["Github"] = "GITHUB";
     RepoSourceType["GithubPublic"] = "GITHUB_PUBLIC";
     RepoSourceType["Gitlab"] = "GITLAB";
-    RepoSourceType["Git"] = "GIT";
-    RepoSourceType["Docker"] = "DOCKER";
-    RepoSourceType["DockerHub"] = "DOCKER_HUB";
+    RepoSourceType["Helm"] = "HELM";
 })(RepoSourceType = exports.RepoSourceType || (exports.RepoSourceType = {}));
 var StripeSubscriptionStatus;
 (function (StripeSubscriptionStatus) {
     StripeSubscriptionStatus["Active"] = "active";
-    StripeSubscriptionStatus["PastDue"] = "past_due";
-    StripeSubscriptionStatus["Unpaid"] = "unpaid";
     StripeSubscriptionStatus["Canceled"] = "canceled";
     StripeSubscriptionStatus["Incomplete"] = "incomplete";
     StripeSubscriptionStatus["IncompleteExpired"] = "incomplete_expired";
+    StripeSubscriptionStatus["PastDue"] = "past_due";
     StripeSubscriptionStatus["Trialing"] = "trialing";
+    StripeSubscriptionStatus["Unpaid"] = "unpaid";
 })(StripeSubscriptionStatus = exports.StripeSubscriptionStatus || (exports.StripeSubscriptionStatus = {}));
 var TeamMemberRole;
 (function (TeamMemberRole) {
-    TeamMemberRole["Owner"] = "OWNER";
     TeamMemberRole["Admin"] = "ADMIN";
     TeamMemberRole["Member"] = "MEMBER";
+    TeamMemberRole["Owner"] = "OWNER";
 })(TeamMemberRole = exports.TeamMemberRole || (exports.TeamMemberRole = {}));
 var UserAction;
 (function (UserAction) {
-    UserAction["ReadPrivate"] = "READ_PRIVATE";
     UserAction["EditBilling"] = "EDIT_BILLING";
+    UserAction["ReadPrivate"] = "READ_PRIVATE";
 })(UserAction = exports.UserAction || (exports.UserAction = {}));
 exports.DeployResultFragmentDoc = (0, graphql_tag_1.default) `
     fragment DeployResult on Repo {
   id
   productionDeployment {
+    id
+  }
+}
+    `;
+exports.GetProjectDocument = (0, graphql_tag_1.default) `
+    query GetProject($path: String!) {
+  project(path: $path) {
     id
   }
 }
@@ -204,14 +229,31 @@ exports.DeployBranchDocument = (0, graphql_tag_1.default) `
   }
 }
     ${exports.DeployResultFragmentDoc}`;
+exports.GetDeploymentDocument = (0, graphql_tag_1.default) `
+    query GetDeployment($id: ID!) {
+  currentUser {
+    id
+    deployment(id: $id) {
+      id
+      status
+    }
+  }
+}
+    `;
 const defaultWrapper = (action, _operationName) => action();
 function getSdk(client, withWrapper = defaultWrapper) {
     return {
+        GetProject(variables, requestHeaders) {
+            return withWrapper((wrappedRequestHeaders) => client.request(exports.GetProjectDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'GetProject');
+        },
         UpdateProject(variables, requestHeaders) {
             return withWrapper((wrappedRequestHeaders) => client.request(exports.UpdateProjectDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'UpdateProject');
         },
         DeployBranch(variables, requestHeaders) {
             return withWrapper((wrappedRequestHeaders) => client.request(exports.DeployBranchDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'DeployBranch');
+        },
+        GetDeployment(variables, requestHeaders) {
+            return withWrapper((wrappedRequestHeaders) => client.request(exports.GetDeploymentDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'GetDeployment');
         }
     };
 }
@@ -280,20 +322,31 @@ const core = __importStar(__nccwpck_require__(2186));
 const graphql_request_1 = __nccwpck_require__(2476);
 const graphql_1 = __nccwpck_require__(9088);
 function run() {
-    var _a;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const endpoint = core.getInput('api_url') || 'https://anchor.zeet.co/graphql';
             const token = core.getInput('deploy_key');
-            const projectId = core.getInput('project_id');
+            const projectPath = core.getInput('project');
+            let projectId = core.getInput('project_id');
             const image = core.getInput('image');
             const branch = core.getInput('branch');
+            const wait = core.getBooleanInput('wait');
             const graphQLClient = new graphql_request_1.GraphQLClient(endpoint, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
             });
             const sdk = (0, graphql_1.getSdk)(graphQLClient);
+            if (!projectId) {
+                if (!projectPath) {
+                    core.error('invalid input, project name or id is required');
+                }
+                const p = yield sdk.GetProject({
+                    path: projectPath
+                });
+                projectId = p.project.id;
+            }
             let deployResult = {};
             if (image) {
                 const result = yield sdk.UpdateProject({
@@ -316,9 +369,43 @@ function run() {
             else {
                 core.error('invalid input, image or branch required');
             }
-            const link = `https://zeet.co/repo/${deployResult === null || deployResult === void 0 ? void 0 : deployResult.id}/deployments/${(_a = deployResult === null || deployResult === void 0 ? void 0 : deployResult.productionDeployment) === null || _a === void 0 ? void 0 : _a.id}`;
+            if (!((_a = deployResult === null || deployResult === void 0 ? void 0 : deployResult.productionDeployment) === null || _a === void 0 ? void 0 : _a.id)) {
+                core.error('deploy failed');
+                return; // not needed, added for type checker
+            }
+            const link = `https://zeet.co/repo/${deployResult === null || deployResult === void 0 ? void 0 : deployResult.id}/deployments/${deployResult.productionDeployment.id}`;
             core.info(`Zeet Dashboard: ${link}`);
             core.setOutput('link', link);
+            if (wait) {
+                let done = false;
+                while (!done) {
+                    const result = yield sdk.GetDeployment({
+                        id: deployResult.productionDeployment.id
+                    });
+                    if (((_c = (_b = result.currentUser) === null || _b === void 0 ? void 0 : _b.deployment) === null || _c === void 0 ? void 0 : _c.status) ===
+                        graphql_1.DeploymentStatus.BuildInProgress) {
+                        core.info('project building...');
+                    }
+                    else if (((_e = (_d = result.currentUser) === null || _d === void 0 ? void 0 : _d.deployment) === null || _e === void 0 ? void 0 : _e.status) ===
+                        graphql_1.DeploymentStatus.DeployInProgress) {
+                        core.info('project deploying');
+                    }
+                    else if (((_g = (_f = result.currentUser) === null || _f === void 0 ? void 0 : _f.deployment) === null || _g === void 0 ? void 0 : _g.status) ===
+                        graphql_1.DeploymentStatus.DeploySucceeded ||
+                        ((_j = (_h = result.currentUser) === null || _h === void 0 ? void 0 : _h.deployment) === null || _j === void 0 ? void 0 : _j.status) ===
+                            graphql_1.DeploymentStatus.DeployStopped) {
+                        core.info('project deploy succeeded');
+                    }
+                    else if (((_l = (_k = result.currentUser) === null || _k === void 0 ? void 0 : _k.deployment) === null || _l === void 0 ? void 0 : _l.status) ===
+                        graphql_1.DeploymentStatus.BuildFailed ||
+                        ((_o = (_m = result.currentUser) === null || _m === void 0 ? void 0 : _m.deployment) === null || _o === void 0 ? void 0 : _o.status) ===
+                            graphql_1.DeploymentStatus.DeployFailed) {
+                        core.info('project deploy failed, check Zeet dashboard for more info');
+                        core.setFailed('project deploy failed, check Zeet dashboard for more info');
+                        done = true;
+                    }
+                }
+            }
             core.debug(new Date().toTimeString());
         }
         catch (error) {

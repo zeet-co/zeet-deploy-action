@@ -5,6 +5,12 @@ fragment DeployResult on Repo {
   }
 }
 
+query GetProject($path: String!) {
+  project(path: $path) {
+    id
+  }
+}
+
 mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
     ...DeployResult
@@ -14,5 +20,15 @@ mutation UpdateProject($input: UpdateProjectInput!) {
 mutation DeployBranch($id: ID!, $branch: String) {
   buildRepo(id: $id, branch: $branch) {
     ...DeployResult
+  }
+}
+
+query GetDeployment($id: ID!) {
+  currentUser {
+    id
+    deployment(id: $id) {
+      id
+      status
+    }
   }
 }
