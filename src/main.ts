@@ -95,6 +95,7 @@ async function run(): Promise<void> {
             DeploymentStatus.DeployStopped
         ) {
           core.info('project deploy succeeded')
+          done = true
         } else if (
           result.currentUser?.deployment?.status ===
             DeploymentStatus.BuildFailed ||
