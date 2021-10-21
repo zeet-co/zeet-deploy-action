@@ -395,6 +395,7 @@ function run() {
                         ((_j = (_h = result.currentUser) === null || _h === void 0 ? void 0 : _h.deployment) === null || _j === void 0 ? void 0 : _j.status) ===
                             graphql_1.DeploymentStatus.DeployStopped) {
                         core.info('project deploy succeeded');
+                        done = true;
                     }
                     else if (((_l = (_k = result.currentUser) === null || _k === void 0 ? void 0 : _k.deployment) === null || _l === void 0 ? void 0 : _l.status) ===
                         graphql_1.DeploymentStatus.BuildFailed ||
