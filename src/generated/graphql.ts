@@ -80,6 +80,14 @@ export type AddClusterInput = {
   userID: Scalars['UUID'];
 };
 
+export type AddContainerRegistryInput = {
+  name: Scalars['String'];
+  password: Scalars['String'];
+  registry: Scalars['URL'];
+  userID: Scalars['UUID'];
+  username: Scalars['String'];
+};
+
 export type AddGcpAccountInput = {
   credentials: Scalars['Upload'];
   projectID: Scalars['String'];
@@ -142,6 +150,7 @@ export type Build = {
   backend?: Maybe<Scalars['String']>;
   buildID?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['Time']>;
+  errorMessage?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   image?: Maybe<Scalars['String']>;
   logs?: Maybe<Logs>;
@@ -166,6 +175,7 @@ export type BuildMethod = {
   buildCommand?: Maybe<Scalars['String']>;
   dockerfilePath?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nodejsVersion?: Maybe<Scalars['String']>;
   releaseCommand?: Maybe<Scalars['String']>;
   runCommand?: Maybe<Scalars['String']>;
   staticPath?: Maybe<Scalars['String']>;
@@ -188,7 +198,7 @@ export enum BuildType {
   Herokuish = 'HEROKUISH',
   Node = 'NODE',
   NodeNextjs = 'NODE_NEXTJS',
-  NodeNextjs_14 = 'NODE_NEXTJS_14',
+  NodeNextjsFast = 'NODE_NEXTJS_FAST',
   NodeStatic = 'NODE_STATIC',
   Python = 'PYTHON',
   PythonDjango = 'PYTHON_DJANGO',
@@ -197,7 +207,6 @@ export enum BuildType {
 
 export type CiSource = {
   description?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
   name: Scalars['String'];
   owner: Scalars['String'];
   url: Scalars['URL'];
@@ -274,6 +283,7 @@ export type Cluster = {
   id: Scalars['UUID'];
   ingressDNS?: Maybe<Scalars['String']>;
   ingressIP?: Maybe<Scalars['String']>;
+  kubeconfig?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   private: Scalars['Boolean'];
   prometheus?: Maybe<Prometheus>;
@@ -298,6 +308,14 @@ export type Container = {
   __typename?: 'Container';
   id: Scalars['UUID'];
   status: ContainerStatus;
+};
+
+export type ContainerRegistry = {
+  __typename?: 'ContainerRegistry';
+  id: Scalars['UUID'];
+  name: Scalars['String'];
+  registry: Scalars['URL'];
+  username?: Maybe<Scalars['String']>;
 };
 
 export type ContainerSpec = {
@@ -451,6 +469,7 @@ export type DatadogIntegration = Integration & {
 export type DeployStatus = {
   __typename?: 'DeployStatus';
   active: Scalars['Boolean'];
+  errorMessage?: Maybe<Scalars['String']>;
   publicIPs?: Maybe<Array<Scalars['String']>>;
   readyReplicas: Scalars['Int'];
   replicas: Scalars['Int'];
@@ -481,6 +500,8 @@ export type Deployment = {
   deployStatus?: Maybe<DeployStatus>;
   endpoint?: Maybe<Scalars['String']>;
   endpoints?: Maybe<Array<Scalars['String']>>;
+  errorMessage?: Maybe<Scalars['String']>;
+  events: Array<Event>;
   gcpLinks?: Maybe<GcpLinks>;
   helmRelease?: Maybe<HelmRelease>;
   id: Scalars['ID'];
@@ -614,6 +635,22 @@ export enum ErrorCode {
   NoContainers = 'NoContainers',
   NoDockerfilePresent = 'NoDockerfilePresent',
   NoPortsExposed = 'NoPortsExposed'
+}
+
+export type Event = {
+  __typename?: 'Event';
+  count: Scalars['Int'];
+  id: Scalars['String'];
+  lastSeenAt: Scalars['Time'];
+  message: Scalars['String'];
+  source: Scalars['String'];
+  type: EventType;
+};
+
+export enum EventType {
+  Error = 'ERROR',
+  Info = 'INFO',
+  Warning = 'WARNING'
 }
 
 export type GcpAccount = {
@@ -813,6 +850,13 @@ export enum IntegrationType {
   SlackWebhook = 'SLACK_WEBHOOK'
 }
 
+export type InviteTeamMemberInput = {
+  email?: Maybe<Scalars['String']>;
+  expiresAt?: Maybe<Scalars['Time']>;
+  id: Scalars['UUID'];
+  role: TeamMemberRole;
+};
+
 export type JobRun = {
   __typename?: 'JobRun';
   build?: Maybe<Build>;
@@ -910,8 +954,10 @@ export type Metric = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptTeamMemberInvitation: Team;
   addAWSAccount: AwsAccount;
   addCluster: Cluster;
+  addContainerRegistry: ContainerRegistry;
   addGCPAccount: GcpAccount;
   addProjectCollaborator: Repo;
   addRepoCustomDomain: Repo;
@@ -935,14 +981,17 @@ export type Mutation = {
   deleteProjectBranch: Scalars['Boolean'];
   deleteRepo: Scalars['Boolean'];
   deleteTeam: Scalars['Boolean'];
+  deleteTeamMemberInvitation: Scalars['Boolean'];
   deleteUser: Scalars['Boolean'];
   deployRepo: Repo;
   disableRepo: Repo;
   enableRepo: Repo;
   freezeRepo: Template;
+  inviteTeamMember: TeamMemberInvitation;
   migrateGithubConnection: Repo;
   reissueCustomDomainCertificate: Repo;
   removeAWSAccount: Scalars['Boolean'];
+  removeContainerRegistry: Scalars['Boolean'];
   removeGCPAccount: Scalars['Boolean'];
   removeLogShipper: Scalars['Boolean'];
   removeProbe: Repo;
@@ -951,6 +1000,7 @@ export type Mutation = {
   removeTeamMember: Team;
   removeUserIntegration: Scalars['Boolean'];
   repeatDeployment: Deployment;
+  resendTeamMemberInvitation: Scalars['Boolean'];
   rollbackProjectToDeployment: Repo;
   runJob: JobRun;
   setPaymentMethod: User;
@@ -967,6 +1017,11 @@ export type Mutation = {
 };
 
 
+export type MutationAcceptTeamMemberInvitationArgs = {
+  token: Scalars['String'];
+};
+
+
 export type MutationAddAwsAccountArgs = {
   input: AddAwsAccountInput;
 };
@@ -974,6 +1029,11 @@ export type MutationAddAwsAccountArgs = {
 
 export type MutationAddClusterArgs = {
   input: AddClusterInput;
+};
+
+
+export type MutationAddContainerRegistryArgs = {
+  input: AddContainerRegistryInput;
 };
 
 
@@ -1096,6 +1156,11 @@ export type MutationDeleteTeamArgs = {
 };
 
 
+export type MutationDeleteTeamMemberInvitationArgs = {
+  id: Scalars['UUID'];
+};
+
+
 export type MutationDeployRepoArgs = {
   id: Scalars['ID'];
 };
@@ -1116,6 +1181,11 @@ export type MutationFreezeRepoArgs = {
 };
 
 
+export type MutationInviteTeamMemberArgs = {
+  input: InviteTeamMemberInput;
+};
+
+
 export type MutationMigrateGithubConnectionArgs = {
   id: Scalars['UUID'];
   installationID: Scalars['String'];
@@ -1128,6 +1198,11 @@ export type MutationReissueCustomDomainCertificateArgs = {
 
 
 export type MutationRemoveAwsAccountArgs = {
+  id: Scalars['UUID'];
+};
+
+
+export type MutationRemoveContainerRegistryArgs = {
   id: Scalars['UUID'];
 };
 
@@ -1169,6 +1244,11 @@ export type MutationRemoveUserIntegrationArgs = {
 
 export type MutationRepeatDeploymentArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationResendTeamMemberInvitationArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -1243,6 +1323,15 @@ export type PageInfo = {
   hasNextPage: Scalars['Boolean'];
   hasPreviousPage: Scalars['Boolean'];
   startCursor: Scalars['String'];
+};
+
+export type PageInput = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  filter?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  sort?: Maybe<Scalars['String']>;
 };
 
 export type Plan = {
@@ -1323,6 +1412,18 @@ export type ProbeInput = {
   timeoutSeconds?: Maybe<Scalars['Int']>;
 };
 
+export type ProfileOwner = {
+  avatar: Scalars['URL'];
+  login: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type Project = {
+  __typename?: 'Project';
+  id: Scalars['UUID'];
+  repo?: Maybe<Repo>;
+};
+
 export type ProjectBuildInput = {
   buildCommand?: Maybe<Scalars['String']>;
   buildType?: Maybe<BuildType>;
@@ -1353,6 +1454,13 @@ export enum ProjectCollaboratorRole {
   Viewer = 'VIEWER'
 }
 
+export type ProjectConnection = {
+  __typename?: 'ProjectConnection';
+  edges: Array<ProjectEdge>;
+  nodes: Array<Project>;
+  pageInfo: PageInfo;
+};
+
 export type ProjectDeployInput = {
   awsAccountID?: Maybe<Scalars['UUID']>;
   clusterID?: Maybe<Scalars['UUID']>;
@@ -1360,11 +1468,19 @@ export type ProjectDeployInput = {
   gcpAccountID?: Maybe<Scalars['UUID']>;
 };
 
+export type ProjectEdge = {
+  __typename?: 'ProjectEdge';
+  cursor: Scalars['String'];
+  node: Project;
+};
+
 export type ProjectOwner = {
-  avatar: Scalars['URL'];
-  id: Scalars['ID'];
-  login: Scalars['String'];
-  name: Scalars['String'];
+  projects: ProjectConnection;
+};
+
+
+export type ProjectOwnerProjectsArgs = {
+  input?: Maybe<ProjectsInput>;
 };
 
 export type ProjectResourcesInput = {
@@ -1392,6 +1508,10 @@ export type ProjectTemplate = {
   volumes?: Maybe<Array<VolumeSpec>>;
 };
 
+export type ProjectsInput = {
+  page?: Maybe<PageInput>;
+};
+
 export type Prometheus = {
   __typename?: 'Prometheus';
   password: Scalars['String'];
@@ -1417,8 +1537,9 @@ export type Query = {
   dockerRepository?: Maybe<DockerRepository>;
   helmRepository: HelmRepository;
   prices: Prices;
-  project: Repo;
+  project?: Maybe<Project>;
   searchHelmCharts: HelmChartConnection;
+  team?: Maybe<Team>;
   template: Template;
   user: User;
 };
@@ -1447,6 +1568,12 @@ export type QueryProjectArgs = {
 
 export type QuerySearchHelmChartsArgs = {
   input: SearchHelmChartsInput;
+};
+
+
+export type QueryTeamArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  path?: Maybe<Scalars['String']>;
 };
 
 
@@ -1514,6 +1641,7 @@ export type Repo = {
   cluster?: Maybe<Cluster>;
   collaboratorInvitations?: Maybe<Array<ProjectCollaboratorInvitation>>;
   collaborators?: Maybe<Array<ProjectCollaborator>>;
+  containerRegistry?: Maybe<ContainerRegistry>;
   cpu?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['Time']>;
   cronJobSchedule?: Maybe<Scalars['String']>;
@@ -1792,33 +1920,35 @@ export type TpuSpec = {
   type: Scalars['String'];
 };
 
-export type Team = {
+export type Team = ProfileOwner & ProjectOwner & {
   __typename?: 'Team';
   avatar: Scalars['URL'];
+  children?: Maybe<Array<Team>>;
   id: Scalars['UUID'];
   login: Scalars['String'];
   memberInvitations: Array<TeamMemberInvitation>;
   members: Array<UserTeamEdge>;
   name: Scalars['String'];
+  parent?: Maybe<Team>;
   plan: Plan;
-  repos?: Maybe<Array<Repo>>;
+  projects: ProjectConnection;
   user: User;
 };
 
 
-export type TeamReposArgs = {
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  input?: Maybe<ReposInput>;
+export type TeamProjectsArgs = {
+  input?: Maybe<ProjectsInput>;
 };
 
 export type TeamMemberInvitation = {
   __typename?: 'TeamMemberInvitation';
-  email: Scalars['String'];
+  createdAt: Scalars['Time'];
+  email?: Maybe<Scalars['String']>;
+  expiresAt?: Maybe<Scalars['Time']>;
   id: Scalars['UUID'];
   link: Scalars['String'];
-  role: Scalars['String'];
-  team: TeamMemberRole;
+  role: TeamMemberRole;
+  team: Team;
 };
 
 export enum TeamMemberRole {
@@ -1857,6 +1987,7 @@ export type UpdateProjectInput = {
   buildCommand?: Maybe<Scalars['String']>;
   buildMemory?: Maybe<Scalars['Float']>;
   buildType?: Maybe<Scalars['String']>;
+  containerRegistry?: Maybe<Scalars['UUID']>;
   cpu?: Maybe<Scalars['String']>;
   cronJobSchedule?: Maybe<Scalars['String']>;
   dedicated?: Maybe<Scalars['Boolean']>;
@@ -1876,6 +2007,7 @@ export type UpdateProjectInput = {
   logShipper?: Maybe<LogShipperInput>;
   manualDeploy?: Maybe<Scalars['Boolean']>;
   memory?: Maybe<Scalars['String']>;
+  nodejsVersion?: Maybe<Scalars['String']>;
   ports?: Maybe<Scalars['JSON']>;
   preStopSleep?: Maybe<Scalars['Int']>;
   productionBranch?: Maybe<Scalars['String']>;
@@ -1918,7 +2050,7 @@ export type UpdateWebhookIntegrationInput = {
   userID: Scalars['UUID'];
 };
 
-export type User = ProjectOwner & {
+export type User = ProfileOwner & ProjectOwner & {
   __typename?: 'User';
   advanced?: Maybe<Scalars['Boolean']>;
   apiKeys?: Maybe<Array<ApiKey>>;
@@ -1928,7 +2060,9 @@ export type User = ProjectOwner & {
   billingURL?: Maybe<Scalars['String']>;
   canDeploy?: Maybe<Scalars['Boolean']>;
   checkProjectName: Scalars['Boolean'];
+  cluster?: Maybe<Cluster>;
   clusters?: Maybe<Array<Cluster>>;
+  containerRegistries?: Maybe<Array<ContainerRegistry>>;
   createdAt?: Maybe<Scalars['Time']>;
   defaultCluster?: Maybe<Cluster>;
   deployment?: Maybe<Deployment>;
@@ -1951,6 +2085,7 @@ export type User = ProjectOwner & {
   needsPaymentMethod?: Maybe<Scalars['Boolean']>;
   paymentAuthorizationError?: Maybe<Scalars['String']>;
   paymentError?: Maybe<Scalars['String']>;
+  projects: ProjectConnection;
   repo?: Maybe<Repo>;
   repos?: Maybe<Array<Repo>>;
   stripe?: Maybe<StripeUser>;
@@ -1963,6 +2098,11 @@ export type User = ProjectOwner & {
 
 export type UserCheckProjectNameArgs = {
   input: CheckProjectNameInput;
+};
+
+
+export type UserClusterArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -1985,6 +2125,11 @@ export type UserGithubRepositoryArgs = {
   installationID: Scalars['ID'];
   owner: Scalars['String'];
   repo: Scalars['String'];
+};
+
+
+export type UserProjectsArgs = {
+  input?: Maybe<ProjectsInput>;
 };
 
 
@@ -2063,7 +2208,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project: { __typename?: 'Repo', id: string } };
+export type GetProjectQuery = { __typename?: 'Query', project?: Maybe<{ __typename?: 'Project', id: any }> };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: UpdateProjectInput;
@@ -2172,7 +2317,12 @@ export type Sdk = ReturnType<typeof getSdk>;
       "SlackIntegration",
       "SlackWebhookIntegration"
     ],
+    "ProfileOwner": [
+      "Team",
+      "User"
+    ],
     "ProjectOwner": [
+      "Team",
       "User"
     ]
   }
