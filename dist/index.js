@@ -10,7 +10,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSdk = exports.GetDeploymentDocument = exports.DeployBranchDocument = exports.UpdateProjectDocument = exports.GetProjectDocument = exports.DeployResultFragmentDoc = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.JobRunState = exports.IntegrationType = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.EventType = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.BuildType = exports.BuildState = exports.AutoscalingType = exports.AwsAccountState = void 0;
+exports.getSdk = exports.GetDeploymentDocument = exports.DeployBranchDocument = exports.UpdateBranchDocument = exports.UpdateProjectDocument = exports.GetProjectDocument = exports.DeployResultFragmentDoc = exports.UserAction = exports.TeamMemberRole = exports.StripeSubscriptionStatus = exports.RepoSourceType = exports.ProjectCollaboratorRole = exports.PortProtocol = exports.PlanTier = exports.PlanBillingPeriod = exports.LogShipperType = exports.JobRunState = exports.IntegrationType = exports.IpfsServiceState = exports.GithubUserType = exports.GitProvider = exports.GcpAccountState = exports.EventType = exports.ErrorCode = exports.DisableReason = exports.DeploymentStatus = exports.DeployTarget = exports.DeployStrategy = exports.DatabaseProviderType = exports.DatabaseEngineType = exports.DoAccountState = exports.DnsRecordType = exports.ContainerRegistryCredentialProvider = exports.ClusterState = exports.ClusterProvider = exports.CloudProvider = exports.CloudAccountState = exports.CertificateProivder = exports.CdnProvider = exports.BuildType = exports.BuildState = exports.AutoscalingType = exports.AwsAccountState = void 0;
 const graphql_tag_1 = __importDefault(__nccwpck_require__(8435));
 var AwsAccountState;
 (function (AwsAccountState) {
@@ -47,14 +47,43 @@ var BuildType;
     BuildType["PythonDjango"] = "PYTHON_DJANGO";
     BuildType["Ubuntu"] = "UBUNTU";
 })(BuildType = exports.BuildType || (exports.BuildType = {}));
+var CdnProvider;
+(function (CdnProvider) {
+    CdnProvider["AwsCloudfront"] = "AWS_CLOUDFRONT";
+})(CdnProvider = exports.CdnProvider || (exports.CdnProvider = {}));
+var CertificateProivder;
+(function (CertificateProivder) {
+    CertificateProivder["AwsAcm"] = "AWS_ACM";
+    CertificateProivder["CertManager"] = "CERT_MANAGER";
+})(CertificateProivder = exports.CertificateProivder || (exports.CertificateProivder = {}));
+var CloudAccountState;
+(function (CloudAccountState) {
+    CloudAccountState["Error"] = "ERROR";
+    CloudAccountState["Success"] = "SUCCESS";
+    CloudAccountState["Waiting"] = "WAITING";
+})(CloudAccountState = exports.CloudAccountState || (exports.CloudAccountState = {}));
 var CloudProvider;
 (function (CloudProvider) {
+    CloudProvider["Alibaba"] = "ALIBABA";
     CloudProvider["Aws"] = "AWS";
-    CloudProvider["Gpc"] = "GPC";
+    CloudProvider["Azure"] = "AZURE";
+    CloudProvider["Coreweave"] = "COREWEAVE";
+    CloudProvider["Do"] = "DO";
+    CloudProvider["Gcp"] = "GCP";
+    CloudProvider["Ibm"] = "IBM";
+    CloudProvider["Linode"] = "LINODE";
+    CloudProvider["Oci"] = "OCI";
+    CloudProvider["Ovh"] = "OVH";
+    CloudProvider["Scaleway"] = "SCALEWAY";
+    CloudProvider["Tencent"] = "TENCENT";
     CloudProvider["Unknown"] = "UNKNOWN";
+    CloudProvider["Vultr"] = "VULTR";
+    CloudProvider["Zeet"] = "ZEET";
 })(CloudProvider = exports.CloudProvider || (exports.CloudProvider = {}));
 var ClusterProvider;
 (function (ClusterProvider) {
+    ClusterProvider["Coreweave"] = "COREWEAVE";
+    ClusterProvider["Doks"] = "DOKS";
     ClusterProvider["Eks"] = "EKS";
     ClusterProvider["Generic"] = "GENERIC";
     ClusterProvider["Gke"] = "GKE";
@@ -62,9 +91,47 @@ var ClusterProvider;
 var ClusterState;
 (function (ClusterState) {
     ClusterState["Creating"] = "CREATING";
+    ClusterState["Deleting"] = "DELETING";
     ClusterState["Error"] = "ERROR";
+    ClusterState["ErrorDeleting"] = "ERROR_DELETING";
     ClusterState["Healthy"] = "HEALTHY";
+    ClusterState["Pending"] = "PENDING";
 })(ClusterState = exports.ClusterState || (exports.ClusterState = {}));
+var ContainerRegistryCredentialProvider;
+(function (ContainerRegistryCredentialProvider) {
+    ContainerRegistryCredentialProvider["Docker"] = "DOCKER";
+    ContainerRegistryCredentialProvider["Docr"] = "DOCR";
+    ContainerRegistryCredentialProvider["Ecr"] = "ECR";
+    ContainerRegistryCredentialProvider["Gcr"] = "GCR";
+})(ContainerRegistryCredentialProvider = exports.ContainerRegistryCredentialProvider || (exports.ContainerRegistryCredentialProvider = {}));
+var DnsRecordType;
+(function (DnsRecordType) {
+    DnsRecordType["A"] = "A";
+    DnsRecordType["Cname"] = "CNAME";
+    DnsRecordType["Txt"] = "TXT";
+})(DnsRecordType = exports.DnsRecordType || (exports.DnsRecordType = {}));
+var DoAccountState;
+(function (DoAccountState) {
+    DoAccountState["Error"] = "ERROR";
+    DoAccountState["Success"] = "SUCCESS";
+    DoAccountState["Waiting"] = "WAITING";
+})(DoAccountState = exports.DoAccountState || (exports.DoAccountState = {}));
+var DatabaseEngineType;
+(function (DatabaseEngineType) {
+    DatabaseEngineType["Kafka"] = "KAFKA";
+    DatabaseEngineType["Mongodb"] = "MONGODB";
+    DatabaseEngineType["Mysql"] = "MYSQL";
+    DatabaseEngineType["Nats"] = "NATS";
+    DatabaseEngineType["Postgres"] = "POSTGRES";
+    DatabaseEngineType["Redis"] = "REDIS";
+})(DatabaseEngineType = exports.DatabaseEngineType || (exports.DatabaseEngineType = {}));
+var DatabaseProviderType;
+(function (DatabaseProviderType) {
+    DatabaseProviderType["AwsRds"] = "AWS_RDS";
+    DatabaseProviderType["Docker"] = "DOCKER";
+    DatabaseProviderType["DoDatabase"] = "DO_DATABASE";
+    DatabaseProviderType["GcpCloudSql"] = "GCP_CLOUD_SQL";
+})(DatabaseProviderType = exports.DatabaseProviderType || (exports.DatabaseProviderType = {}));
 var DeployStrategy;
 (function (DeployStrategy) {
     DeployStrategy["BlueGreen"] = "BLUE_GREEN";
@@ -75,11 +142,15 @@ var DeployStrategy;
 })(DeployStrategy = exports.DeployStrategy || (exports.DeployStrategy = {}));
 var DeployTarget;
 (function (DeployTarget) {
+    DeployTarget["AwsSam"] = "AWS_SAM";
+    DeployTarget["GcpCloudRun"] = "GCP_CLOUD_RUN";
     DeployTarget["Kubernetes"] = "KUBERNETES";
     DeployTarget["Serverless"] = "SERVERLESS";
+    DeployTarget["Terraform"] = "TERRAFORM";
 })(DeployTarget = exports.DeployTarget || (exports.DeployTarget = {}));
 var DeploymentStatus;
 (function (DeploymentStatus) {
+    DeploymentStatus["BuildAborted"] = "BUILD_ABORTED";
     DeploymentStatus["BuildFailed"] = "BUILD_FAILED";
     DeploymentStatus["BuildInProgress"] = "BUILD_IN_PROGRESS";
     DeploymentStatus["BuildPending"] = "BUILD_PENDING";
@@ -88,8 +159,10 @@ var DeploymentStatus;
     DeploymentStatus["DeployFailed"] = "DEPLOY_FAILED";
     DeploymentStatus["DeployHealhty"] = "DEPLOY_HEALHTY";
     DeploymentStatus["DeployInProgress"] = "DEPLOY_IN_PROGRESS";
+    DeploymentStatus["DeployPending"] = "DEPLOY_PENDING";
     DeploymentStatus["DeployStopped"] = "DEPLOY_STOPPED";
     DeploymentStatus["DeploySucceeded"] = "DEPLOY_SUCCEEDED";
+    DeploymentStatus["ReleaseInProgress"] = "RELEASE_IN_PROGRESS";
 })(DeploymentStatus = exports.DeploymentStatus || (exports.DeploymentStatus = {}));
 var DisableReason;
 (function (DisableReason) {
@@ -132,6 +205,13 @@ var GithubUserType;
     GithubUserType["Organization"] = "Organization";
     GithubUserType["User"] = "User";
 })(GithubUserType = exports.GithubUserType || (exports.GithubUserType = {}));
+var IpfsServiceState;
+(function (IpfsServiceState) {
+    IpfsServiceState["Creating"] = "CREATING";
+    IpfsServiceState["Deleting"] = "DELETING";
+    IpfsServiceState["Error"] = "ERROR";
+    IpfsServiceState["Healthy"] = "HEALTHY";
+})(IpfsServiceState = exports.IpfsServiceState || (exports.IpfsServiceState = {}));
 var IntegrationType;
 (function (IntegrationType) {
     IntegrationType["Datadog"] = "DATADOG";
@@ -149,6 +229,7 @@ var JobRunState;
 })(JobRunState = exports.JobRunState || (exports.JobRunState = {}));
 var LogShipperType;
 (function (LogShipperType) {
+    LogShipperType["Datadog"] = "DATADOG";
     LogShipperType["Logdna"] = "LOGDNA";
     LogShipperType["Logzio"] = "LOGZIO";
     LogShipperType["Syslog"] = "SYSLOG";
@@ -184,6 +265,7 @@ var RepoSourceType;
     RepoSourceType["GithubPublic"] = "GITHUB_PUBLIC";
     RepoSourceType["Gitlab"] = "GITLAB";
     RepoSourceType["Helm"] = "HELM";
+    RepoSourceType["Terraform"] = "TERRAFORM";
 })(RepoSourceType = exports.RepoSourceType || (exports.RepoSourceType = {}));
 var StripeSubscriptionStatus;
 (function (StripeSubscriptionStatus) {
@@ -200,6 +282,7 @@ var TeamMemberRole;
     TeamMemberRole["Admin"] = "ADMIN";
     TeamMemberRole["Member"] = "MEMBER";
     TeamMemberRole["Owner"] = "OWNER";
+    TeamMemberRole["Viewer"] = "VIEWER";
 })(TeamMemberRole = exports.TeamMemberRole || (exports.TeamMemberRole = {}));
 var UserAction;
 (function (UserAction) {
@@ -207,11 +290,8 @@ var UserAction;
     UserAction["ReadPrivate"] = "READ_PRIVATE";
 })(UserAction = exports.UserAction || (exports.UserAction = {}));
 exports.DeployResultFragmentDoc = (0, graphql_tag_1.default) `
-    fragment DeployResult on Repo {
+    fragment DeployResult on Deployment {
   id
-  productionDeployment {
-    id
-  }
 }
     `;
 exports.GetProjectDocument = (0, graphql_tag_1.default) `
@@ -224,14 +304,30 @@ exports.GetProjectDocument = (0, graphql_tag_1.default) `
 exports.UpdateProjectDocument = (0, graphql_tag_1.default) `
     mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
-    ...DeployResult
+    id
+    productionDeployment {
+      ...DeployResult
+    }
+  }
+}
+    ${exports.DeployResultFragmentDoc}`;
+exports.UpdateBranchDocument = (0, graphql_tag_1.default) `
+    mutation UpdateBranch($input: UpdateBranchInput!) {
+  updateBranch(input: $input) {
+    id
+    latestDeployment {
+      ...DeployResult
+    }
   }
 }
     ${exports.DeployResultFragmentDoc}`;
 exports.DeployBranchDocument = (0, graphql_tag_1.default) `
     mutation DeployBranch($id: ID!, $branch: String) {
   buildRepo(id: $id, branch: $branch) {
-    ...DeployResult
+    id
+    productionDeployment {
+      ...DeployResult
+    }
   }
 }
     ${exports.DeployResultFragmentDoc}`;
@@ -255,6 +351,9 @@ function getSdk(client, withWrapper = defaultWrapper) {
         UpdateProject(variables, requestHeaders) {
             return withWrapper((wrappedRequestHeaders) => client.request(exports.UpdateProjectDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'UpdateProject');
         },
+        UpdateBranch(variables, requestHeaders) {
+            return withWrapper((wrappedRequestHeaders) => client.request(exports.UpdateBranchDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'UpdateBranch');
+        },
         DeployBranch(variables, requestHeaders) {
             return withWrapper((wrappedRequestHeaders) => client.request(exports.DeployBranchDocument, variables, Object.assign(Object.assign({}, requestHeaders), wrappedRequestHeaders)), 'DeployBranch');
         },
@@ -270,8 +369,17 @@ const result = {
             "DockerRepository",
             "GitHubRepository"
         ],
+        "CloudAccount": [
+            "AWSAccount",
+            "DOAccount",
+            "GCPAccount"
+        ],
         "GitRepository": [
             "GitHubRepository"
+        ],
+        "IPipelineStage": [
+            "BuildStage",
+            "PipelineStage"
         ],
         "Integration": [
             "DatadogIntegration",
@@ -333,7 +441,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const graphql_request_1 = __nccwpck_require__(2476);
 const graphql_1 = __nccwpck_require__(9088);
 function run() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const endpoint = core.getInput('api_url') || 'https://anchor.zeet.co/graphql';
@@ -358,16 +466,30 @@ function run() {
                 });
                 projectId = (_a = p.project) === null || _a === void 0 ? void 0 : _a.id;
             }
-            let deployResult = {};
+            let deployResult = null;
             if (image) {
-                const result = yield sdk.UpdateProject({
-                    input: {
-                        id: projectId,
-                        dockerImage: image
-                    }
-                });
-                core.info(`${image} Deployed!`);
-                deployResult = result === null || result === void 0 ? void 0 : result.updateProject;
+                if (branch) {
+                    const result = yield sdk.UpdateBranch({
+                        input: {
+                            repoID: projectId,
+                            name: branch,
+                            image,
+                            deploy: true
+                        }
+                    });
+                    deployResult = (_b = result === null || result === void 0 ? void 0 : result.updateBranch) === null || _b === void 0 ? void 0 : _b.latestDeployment;
+                    core.info(`${image} Deploying on ${branch}!`);
+                }
+                else {
+                    const result = yield sdk.UpdateProject({
+                        input: {
+                            id: projectId,
+                            dockerImage: image
+                        }
+                    });
+                    deployResult = (_c = result === null || result === void 0 ? void 0 : result.updateProject) === null || _c === void 0 ? void 0 : _c.productionDeployment;
+                    core.info(`${image} Deploying!`);
+                }
             }
             else if (branch) {
                 const result = yield sdk.DeployBranch({
@@ -375,42 +497,42 @@ function run() {
                     branch
                 });
                 core.info(`${branch} Deployed!`);
-                deployResult = result === null || result === void 0 ? void 0 : result.buildRepo;
+                deployResult = (_d = result === null || result === void 0 ? void 0 : result.buildRepo) === null || _d === void 0 ? void 0 : _d.productionDeployment;
             }
             else {
                 core.error('invalid input, image or branch required');
             }
-            if (!((_b = deployResult === null || deployResult === void 0 ? void 0 : deployResult.productionDeployment) === null || _b === void 0 ? void 0 : _b.id)) {
+            if (!(deployResult === null || deployResult === void 0 ? void 0 : deployResult.id)) {
                 core.error('deploy failed');
                 return; // not needed, added for type checker
             }
-            const link = `https://zeet.co/repo/${deployResult === null || deployResult === void 0 ? void 0 : deployResult.id}/deployments/${deployResult.productionDeployment.id}`;
+            const link = `https://zeet.co/repo/${projectId}/deployments/${deployResult.id}`;
             core.info(`Zeet Dashboard: ${link}`);
             core.setOutput('link', link);
             if (wait) {
                 let done = false;
                 while (!done) {
                     const result = yield sdk.GetDeployment({
-                        id: deployResult.productionDeployment.id
+                        id: deployResult.id
                     });
-                    if (((_d = (_c = result.currentUser) === null || _c === void 0 ? void 0 : _c.deployment) === null || _d === void 0 ? void 0 : _d.status) ===
+                    if (((_f = (_e = result.currentUser) === null || _e === void 0 ? void 0 : _e.deployment) === null || _f === void 0 ? void 0 : _f.status) ===
                         graphql_1.DeploymentStatus.BuildInProgress) {
                         core.info('project building...');
                     }
-                    else if (((_f = (_e = result.currentUser) === null || _e === void 0 ? void 0 : _e.deployment) === null || _f === void 0 ? void 0 : _f.status) ===
+                    else if (((_h = (_g = result.currentUser) === null || _g === void 0 ? void 0 : _g.deployment) === null || _h === void 0 ? void 0 : _h.status) ===
                         graphql_1.DeploymentStatus.DeployInProgress) {
                         core.info('project deploying');
                     }
-                    else if (((_h = (_g = result.currentUser) === null || _g === void 0 ? void 0 : _g.deployment) === null || _h === void 0 ? void 0 : _h.status) ===
+                    else if (((_k = (_j = result.currentUser) === null || _j === void 0 ? void 0 : _j.deployment) === null || _k === void 0 ? void 0 : _k.status) ===
                         graphql_1.DeploymentStatus.DeploySucceeded ||
-                        ((_k = (_j = result.currentUser) === null || _j === void 0 ? void 0 : _j.deployment) === null || _k === void 0 ? void 0 : _k.status) ===
+                        ((_m = (_l = result.currentUser) === null || _l === void 0 ? void 0 : _l.deployment) === null || _m === void 0 ? void 0 : _m.status) ===
                             graphql_1.DeploymentStatus.DeployStopped) {
                         core.info('project deploy succeeded');
                         done = true;
                     }
-                    else if (((_m = (_l = result.currentUser) === null || _l === void 0 ? void 0 : _l.deployment) === null || _m === void 0 ? void 0 : _m.status) ===
+                    else if (((_p = (_o = result.currentUser) === null || _o === void 0 ? void 0 : _o.deployment) === null || _p === void 0 ? void 0 : _p.status) ===
                         graphql_1.DeploymentStatus.BuildFailed ||
-                        ((_p = (_o = result.currentUser) === null || _o === void 0 ? void 0 : _o.deployment) === null || _p === void 0 ? void 0 : _p.status) ===
+                        ((_r = (_q = result.currentUser) === null || _q === void 0 ? void 0 : _q.deployment) === null || _r === void 0 ? void 0 : _r.status) ===
                             graphql_1.DeploymentStatus.DeployFailed) {
                         core.info('project deploy failed, check Zeet dashboard for more info');
                         core.setFailed('project deploy failed, check Zeet dashboard for more info');

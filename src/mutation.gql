@@ -1,8 +1,5 @@
-fragment DeployResult on Repo {
+fragment DeployResult on Deployment {
   id
-  productionDeployment {
-    id
-  }
 }
 
 query GetProject($path: String!) {
@@ -13,13 +10,28 @@ query GetProject($path: String!) {
 
 mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
-    ...DeployResult
+    id
+    productionDeployment {
+      ...DeployResult
+    }
+  }
+}
+
+mutation UpdateBranch($input: UpdateBranchInput!) {
+  updateBranch(input: $input) {
+    id
+    latestDeployment {
+      ...DeployResult
+    }
   }
 }
 
 mutation DeployBranch($id: ID!, $branch: String) {
   buildRepo(id: $id, branch: $branch) {
-    ...DeployResult
+    id
+    productionDeployment {
+      ...DeployResult
+    }
   }
 }
 

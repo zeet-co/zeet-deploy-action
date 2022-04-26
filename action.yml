@@ -18,7 +18,7 @@ inputs:
     description: "Docker image to deploy"
     required: false
   branch:
-    description: "Git branch to deploy"
+    description: "Branch name"
     required: false
   wait:
     description: "Wait till the deploy finishes"

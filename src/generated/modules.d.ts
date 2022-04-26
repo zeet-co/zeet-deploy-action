@@ -5,6 +5,7 @@ declare module '*/mutation.gql' {
   export const DeployResult: DocumentNode;
 export const GetProject: DocumentNode;
 export const UpdateProject: DocumentNode;
+export const UpdateBranch: DocumentNode;
 export const DeployBranch: DocumentNode;
 export const GetDeployment: DocumentNode;
 

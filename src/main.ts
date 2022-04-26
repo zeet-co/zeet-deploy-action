@@ -37,18 +37,30 @@ async function run(): Promise<void> {
       projectId = p.project?.id
     }
 
-    let deployResult = {} as DeployResultFragment
+    let deployResult: DeployResultFragment | undefined | null = null
 
     if (image) {
-      const result = await sdk.UpdateProject({
-        input: {
-          id: projectId,
-          dockerImage: image
-        }
-      })
-      core.info(`${image} Deployed!`)
-
-      deployResult = result?.updateProject
+      if (branch) {
+        const result = await sdk.UpdateBranch({
+          input: {
+            repoID: projectId,
+            name: branch,
+            image,
+            deploy: true
+          }
+        })
+        deployResult = result?.updateBranch?.latestDeployment
+        core.info(`${image} Deploying on ${branch}!`)
+      } else {
+        const result = await sdk.UpdateProject({
+          input: {
+            id: projectId,
+            dockerImage: image
+          }
+        })
+        deployResult = result?.updateProject?.productionDeployment
+        core.info(`${image} Deploying!`)
+      }
     } else if (branch) {
       const result = await sdk.DeployBranch({
         id: projectId,
@@ -56,17 +68,17 @@ async function run(): Promise<void> {
       })
       core.info(`${branch} Deployed!`)
 
-      deployResult = result?.buildRepo
+      deployResult = result?.buildRepo?.productionDeployment
     } else {
       core.error('invalid input, image or branch required')
     }
 
-    if (!deployResult?.productionDeployment?.id) {
+    if (!deployResult?.id) {
       core.error('deploy failed')
       return // not needed, added for type checker
     }
 
-    const link = `https://zeet.co/repo/${deployResult?.id}/deployments/${deployResult.productionDeployment.id}`
+    const link = `https://zeet.co/repo/${projectId}/deployments/${deployResult.id}`
 
     core.info(`Zeet Dashboard: ${link}`)
     core.setOutput('link', link)
@@ -75,7 +87,7 @@ async function run(): Promise<void> {
       let done = false
       while (!done) {
         const result = await sdk.GetDeployment({
-          id: deployResult.productionDeployment.id
+          id: deployResult.id
         })
 
         if (
