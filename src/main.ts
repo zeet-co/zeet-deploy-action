@@ -6,6 +6,9 @@ import {
   getSdk
 } from './generated/graphql'
 
+const sleep = async (ms: number): Promise<void> =>
+  new Promise(resolve => setTimeout(resolve, ms))
+
 async function run(): Promise<void> {
   try {
     const endpoint =
@@ -99,7 +102,7 @@ async function run(): Promise<void> {
           result.currentUser?.deployment?.status ===
           DeploymentStatus.DeployInProgress
         ) {
-          core.info('project deploying')
+          core.info('project deploying...')
         } else if (
           result.currentUser?.deployment?.status ===
             DeploymentStatus.DeploySucceeded ||
@@ -120,6 +123,8 @@ async function run(): Promise<void> {
           )
           done = true
         }
+
+        await sleep(2000)
       }
     }
 
