@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "Zeet Deploy Action",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
