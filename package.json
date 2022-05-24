@@ -8,11 +8,10 @@
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint ./index.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest",
     "gen": "graphql-codegen --config codegen.yml",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run build && npm run format && npm run lint && npm run package"
   },
   "repository": {
     "type": "git",
