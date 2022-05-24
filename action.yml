@@ -29,5 +29,5 @@ outputs:
     description: "Link to deployment"
 runs:
   using: 'node16'
-  main: 'lib/index.js'
+  main: 'dist/index.js'
 
