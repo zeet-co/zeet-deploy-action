@@ -26,13 +26,8 @@ inputs:
     default: "false"
 outputs:
   link:
-    value: "test"
     description: "Link to deployment"
 runs:
-  using: "composite"
-  steps:
-    - name: Install Zeet CLI
-      uses: zeet-dev/action-zeet@main
-      with:
-        token: ${{ inputs.deploy_key }}
-        api_url: ${{ inputs.api_url }}
+  using: 'node16'
+  main: 'lib/index.js'
+
