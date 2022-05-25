@@ -42,7 +42,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, action_utils_1.installBinary)();
-            yield exec.exec('zeet', [
+            yield exec.exec('zeet deploy', [
                 core.getInput('project'),
                 core.getInput('image') && `--image=${core.getInput('image')}`,
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,

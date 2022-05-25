@@ -6,7 +6,7 @@ async function main(): Promise<void> {
   try {
     await installBinary()
 
-    await exec.exec('zeet', [
+    await exec.exec('zeet deploy', [
       core.getInput('project'),
       core.getInput('image') && `--image=${core.getInput('image')}`,
       core.getInput('branch') && `--branch=${core.getInput('branch')}`,
