@@ -10,7 +10,6 @@
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint ./index.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "gen": "graphql-codegen --config codegen.yml",
     "all": "npm run build && npm run format && npm run lint && npm run package"
   },
   "repository": {
