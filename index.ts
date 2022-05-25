@@ -1,10 +1,12 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import {installBinary} from 'action-utils'
+import {configureCLI} from 'action-utils/dist/cli'
 
 async function main(): Promise<void> {
   try {
     await installBinary()
+    await configureCLI(core.getInput('deploy_token'), core.getInput('api_url'))
 
     await exec.exec('zeet deploy', [
       core.getInput('project'),

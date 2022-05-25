@@ -38,10 +38,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec = __importStar(__nccwpck_require__(514));
 const core = __importStar(__nccwpck_require__(186));
 const action_utils_1 = __nccwpck_require__(328);
+const cli_1 = __nccwpck_require__(523);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, action_utils_1.installBinary)();
+            yield (0, cli_1.configureCLI)(core.getInput('deploy_token'), core.getInput('api_url'));
             yield exec.exec('zeet deploy', [
                 core.getInput('project'),
                 core.getInput('image') && `--image=${core.getInput('image')}`,
@@ -5532,7 +5534,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.installBinary = void 0;
+exports.configureCLI = exports.installBinary = void 0;
 const tc = __importStar(__nccwpck_require__(784));
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
@@ -5601,6 +5603,14 @@ function installBinary() {
     });
 }
 exports.installBinary = installBinary;
+function configureCLI(token, apiURL) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield exec.exec("zeet login", ["--token=" + token]);
+        if (apiURL)
+            yield exec.exec("zeet config:set", ["server=" + apiURL]);
+    });
+}
+exports.configureCLI = configureCLI;
 
 
 /***/ }),
