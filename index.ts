@@ -6,7 +6,7 @@ import {configureCLI} from 'action-utils/dist/cli'
 async function main(): Promise<void> {
   try {
     await installBinary()
-    await configureCLI(core.getInput('deploy_token'), core.getInput('api_url'))
+    await configureCLI(core.getInput('deploy_key'), core.getInput('api_url'))
 
     await exec.exec('zeet deploy', [
       core.getInput('project'),
@@ -17,7 +17,7 @@ async function main(): Promise<void> {
   } catch (e: unknown) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    core.error(e)
+    core.setFailed(e)
   }
 }
 

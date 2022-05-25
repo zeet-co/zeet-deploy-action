@@ -43,7 +43,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, action_utils_1.installBinary)();
-            yield (0, cli_1.configureCLI)(core.getInput('deploy_token'), core.getInput('api_url'));
+            yield (0, cli_1.configureCLI)(core.getInput('deploy_key'), core.getInput('api_url'));
             yield exec.exec('zeet deploy', [
                 core.getInput('project'),
                 core.getInput('image') && `--image=${core.getInput('image')}`,
@@ -54,7 +54,7 @@ function main() {
         catch (e) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            core.error(e);
+            core.setFailed(e);
         }
     });
 }
