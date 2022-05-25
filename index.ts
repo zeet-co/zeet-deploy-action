@@ -8,11 +8,15 @@ async function main(): Promise<void> {
     await installBinary()
     await configureCLI(core.getInput('deploy_key'), core.getInput('api_url'))
 
-    await exec.exec('zeet deploy', [
-      core.getInput('project'),
+    const args = [
       core.getInput('image') && `--image=${core.getInput('image')}`,
       core.getInput('branch') && `--branch=${core.getInput('branch')}`,
       core.getInput('follow') && `--follow=${core.getInput('wait')}`
+    ]
+
+    await exec.exec('zeet deploy', [
+      core.getInput('project'),
+      ...args.filter(a => a)
     ])
   } catch (e: unknown) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

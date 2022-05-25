@@ -44,11 +44,14 @@ function main() {
         try {
             yield (0, action_utils_1.installBinary)();
             yield (0, cli_1.configureCLI)(core.getInput('deploy_key'), core.getInput('api_url'));
-            yield exec.exec('zeet deploy', [
-                core.getInput('project'),
+            const args = [
                 core.getInput('image') && `--image=${core.getInput('image')}`,
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,
                 core.getInput('follow') && `--follow=${core.getInput('wait')}`
+            ];
+            yield exec.exec('zeet deploy', [
+                core.getInput('project'),
+                ...args.filter(a => a)
             ]);
         }
         catch (e) {
