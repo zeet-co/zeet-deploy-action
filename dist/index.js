@@ -50,8 +50,9 @@ function main() {
             ]);
         }
         catch (e) {
-            if (e instanceof Error)
-                core.error(e);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            core.error(e);
         }
     });
 }
