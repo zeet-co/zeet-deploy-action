@@ -13,7 +13,9 @@ async function main(): Promise<void> {
       core.getInput('follow') && `--follow=${core.getInput('wait')}`
     ])
   } catch (e: unknown) {
-    if (e instanceof Error) core.error(e)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    core.error(e)
   }
 }
 
