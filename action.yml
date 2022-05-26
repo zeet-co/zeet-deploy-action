@@ -37,7 +37,7 @@ runs:
         token: ${{ inputs.deploy_key }}
     - uses: actions/setup-node@v3
       with:
-        node-version: 14
+        node-version: 16
     - run: npm ci
       shell: bash
     - id: main
