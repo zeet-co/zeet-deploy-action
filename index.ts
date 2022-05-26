@@ -1,7 +1,6 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
-import {installBinary} from 'action-utils'
-import {configureCLI} from 'action-utils/dist/cli'
+import {installBinary, configureCLI} from 'action-utils'
 
 async function main(): Promise<void> {
   try {
