@@ -38,12 +38,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec = __importStar(__nccwpck_require__(514));
 const core = __importStar(__nccwpck_require__(186));
 const action_utils_1 = __nccwpck_require__(328);
-const cli_1 = __nccwpck_require__(523);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield (0, action_utils_1.installBinary)();
-            yield (0, cli_1.configureCLI)(core.getInput('deploy_key'), core.getInput('api_url'));
+            yield (0, action_utils_1.configureCLI)(core.getInput('deploy_key'), core.getInput('api_url'));
             const args = [
                 core.getInput('image') && `--image=${core.getInput('image')}`,
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,
@@ -53,6 +52,14 @@ function main() {
                 core.getInput('project'),
                 ...args.filter(a => a)
             ]);
+            core.setOutput('link', 'test');
+            // const status = await exec.getExecOutput(
+            //   'zeet status',
+            //   [core.getInput('project')],
+            //   {silent: true}
+            // )
+            // const links = status.stdout.match('(https?:\\/\\/zeet\\.co\\/repo[^\\s]+)')
+            // core.setOutput('link', links ? links[0] : 'Not Found')
         }
         catch (e) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -5603,7 +5610,7 @@ function installBinary() {
 exports.installBinary = installBinary;
 function configureCLI(token, apiURL) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec("zeet login", ["--token=" + token]);
+        yield exec.exec("zeet login", [`--token=${token}`]);
         if (apiURL)
             yield exec.exec("zeet config:set", ["server=" + apiURL]);
     });
@@ -5619,9 +5626,10 @@ exports.configureCLI = configureCLI;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.installBinary = void 0;
+exports.configureCLI = exports.installBinary = void 0;
 var cli_1 = __nccwpck_require__(523);
 Object.defineProperty(exports, "installBinary", ({ enumerable: true, get: function () { return cli_1.installBinary; } }));
+Object.defineProperty(exports, "configureCLI", ({ enumerable: true, get: function () { return cli_1.configureCLI; } }));
 
 
 /***/ }),
