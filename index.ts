@@ -2,6 +2,9 @@ import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 
 async function main(): Promise<void> {
+  core.debug(`deploy key: ${core.getInput('deploy_key')}`)
+  core.debug(`wait: ${core.getInput('wait')}`)
+
   try {
     const args = [
       core.getInput('image') && `--image=${core.getInput('image')}`,
