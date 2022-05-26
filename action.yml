@@ -35,11 +35,13 @@ runs:
     - uses: zeet-dev/action-zeet@main
       with:
         token: ${{ inputs.deploy_key }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-    - run: npm ci
+    - run: "ls"
       shell: bash
-    - id: main
-      run: node dist/index.js
-      shell: bash
+#    - uses: actions/setup-node@v3
+#      with:
+#        node-version: 16
+#    - run: npm ci
+#      shell: bash
+#    - id: main
+#      run: node dist/index.js
+#      shell: bash
