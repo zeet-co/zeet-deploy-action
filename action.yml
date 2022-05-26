@@ -32,16 +32,16 @@ runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v3
+      with:
+        repository: zeet-co/zeet-deploy-action
     - uses: zeet-dev/action-zeet@main
       with:
         token: ${{ inputs.deploy_key }}
-    - run: "ls"
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm ci
       shell: bash
-#    - uses: actions/setup-node@v3
-#      with:
-#        node-version: 16
-#    - run: npm ci
-#      shell: bash
-#    - id: main
-#      run: node dist/index.js
-#      shell: bash
+    - id: main
+      run: node dist/index.js
+      shell: bash
