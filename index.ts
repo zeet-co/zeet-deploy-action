@@ -1,9 +1,8 @@
 import * as core from '@actions/core'
 
 async function main(): Promise<void> {
-  core.info(`deploy key: ${core.getInput('deploy_key')}`)
-  // core.debug(`deploy key: ${core.getInput('deploy_key')}`)
-  // core.debug(`wait: ${core.getBooleanInput('wait')}`)
+  core.debug(`deploy key: ${core.getInput('deploy_key')}`)
+  core.debug(`wait: ${core.getBooleanInput('wait')}`)
   //
   // try {
   //   const args = [
