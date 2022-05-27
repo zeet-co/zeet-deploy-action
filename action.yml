@@ -42,9 +42,9 @@ runs:
         node-version: 16
     - run: npm ci
       shell: bash
-#    - id: main
-#      run: node dist/index.js
-#      shell: bash
+    - id: main
+      run: node dist/index.js
+      shell: bash
 #      env:
 #        API_URL: ${{ inputs.api_url}}
 #        DEPLOY_KEY: ${{ inputs.deploy_key }}
