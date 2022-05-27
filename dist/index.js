@@ -39,7 +39,7 @@ const core = __importStar(__nccwpck_require__(186));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         core.info(`deploy key: ${process.env.INPUT_DEPLOY_KEY}`);
-        core.info(`wait: ${process.env.INPUT_WAIT}`);
+        // core.info(`wait: ${process.env.INPUT_WAIT}`)
         // core.info(`deploy key: ${core.getInput('deploy_key')}`)
         // core.debug(`wait: ${core.getBooleanInput('wait')}`)
         //

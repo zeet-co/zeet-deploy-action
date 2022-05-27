@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 
 async function main(): Promise<void> {
   core.info(`deploy key: ${process.env.INPUT_DEPLOY_KEY}`)
-  core.info(`wait: ${process.env.INPUT_WAIT}`)
+  // core.info(`wait: ${process.env.INPUT_WAIT}`)
 
   // core.info(`deploy key: ${core.getInput('deploy_key')}`)
   // core.debug(`wait: ${core.getBooleanInput('wait')}`)
