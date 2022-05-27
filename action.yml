@@ -31,6 +31,8 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - run: echo ${{ inputs.project }}
+      shell: bash
     - uses: actions/checkout@v3
       with:
         repository: zeet-co/zeet-deploy-action
