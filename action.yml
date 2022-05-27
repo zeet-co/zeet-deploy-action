@@ -52,5 +52,5 @@ runs:
         PROJECT_ID: ${{ inputs.project_id }}
         IMAGE: ${{ inputs.image }}
         BRANCH: ${{ inputs.branch }}
-        WAIT: ${{ inputs.wait }}
+#        WAIT: ${{ inputs.wait }}
 
