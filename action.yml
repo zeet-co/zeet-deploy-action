@@ -42,7 +42,7 @@ runs:
         node-version: 16
 #    - run: npm ci
 #      shell: bash
-    - run: node -e "console.log('test')"
+    - run: node dist/index.js
       shell: bash
 #      env:
 #        API_URL: ${{ inputs.api_url}}
