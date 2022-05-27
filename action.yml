@@ -23,7 +23,7 @@ inputs:
   wait:
     description: "Wait till the deploy finishes"
     required: false
-    default: false
+    default: "false"
 outputs:
   link:
     value: "test"
