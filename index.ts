@@ -2,8 +2,6 @@ import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 
 async function main(): Promise<void> {
-  core.info(`PROJECT: ${process.env.INPUT_PROJECT}`)
-
   try {
     const args = [
       core.getInput('image') && `--image=${core.getInput('image')}`,
@@ -12,7 +10,7 @@ async function main(): Promise<void> {
     ]
 
     await exec.exec('zeet deploy', [
-      core.getInput('project'),
+      core.getInput('project') || core.getInput('project_id'),
       ...args.filter(a => a)
     ])
 

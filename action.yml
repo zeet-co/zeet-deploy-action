@@ -26,13 +26,11 @@ inputs:
     default: "false"
 outputs:
   link:
-    value: "test"
+    value: ${{ steps.main.outputs.link }}
     description: "Link to deployment"
 runs:
   using: 'composite'
   steps:
-    - run: echo test ${{ inputs.project }}
-      shell: bash
     - uses: actions/checkout@v3
       with:
         repository: zeet-co/zeet-deploy-action

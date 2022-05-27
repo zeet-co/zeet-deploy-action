@@ -39,7 +39,6 @@ const exec = __importStar(__nccwpck_require__(514));
 const core = __importStar(__nccwpck_require__(186));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info(`PROJECT: ${process.env.INPUT_PROJECT}`);
         try {
             const args = [
                 core.getInput('image') && `--image=${core.getInput('image')}`,
@@ -47,7 +46,7 @@ function main() {
                 core.getInput('follow') && `--follow=${core.getBooleanInput('wait')}`
             ];
             yield exec.exec('zeet deploy', [
-                core.getInput('project'),
+                core.getInput('project') || core.getInput('project_id'),
                 ...args.filter(a => a)
             ]);
             core.setOutput('link', 'test');
