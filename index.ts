@@ -2,7 +2,7 @@ import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 
 async function main(): Promise<void> {
-  core.info(`PROJECT: ${core.getInput('project')}`)
+  core.info(`PROJECT: ${process.env.INPUT_PROJECT}`)
 
   try {
     const args = [
