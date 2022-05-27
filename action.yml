@@ -42,7 +42,7 @@ runs:
         node-version: 16
 #    - run: npm ci
 #      shell: bash
-    - run: node dist/index.js
+    - run: npm run start
       shell: bash
 #      env:
 #        API_URL: ${{ inputs.api_url}}
