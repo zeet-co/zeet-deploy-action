@@ -27,7 +27,6 @@
   "dependencies": {
     "@actions/core": "^1.8.2",
     "@actions/exec": "^1.1.1",
-    "action-utils": "github:zeet-dev/action-utils#main",
     "graphql": "^15.8.0",
     "graphql-request": "^3.5.0"
   },
