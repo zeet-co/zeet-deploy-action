@@ -20,10 +20,10 @@ inputs:
   branch:
     description: "Branch name"
     required: false
-#  wait:
-#    description: "Wait till the deploy finishes"
-#    required: false
-#    default: "false"
+  wait:
+    description: "Wait till the deploy finishes"
+    required: false
+    default: "false"
 outputs:
   link:
     value: "test"
@@ -34,22 +34,24 @@ runs:
     - uses: actions/checkout@v3
       with:
         repository: zeet-co/zeet-deploy-action
-#    - uses: zeet-dev/action-zeet@main
-#      with:
-#        token: ${{ inputs.deploy_key }}
+        branch: v2
+    - uses: zeet-dev/action-zeet@main
+      with:
+        token: ${{ inputs.deploy_key }}
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-#    - run: npm ci
-#      shell: bash
-    - run: ls
+    - run: npm ci
       shell: bash
-#      env:
-#        API_URL: ${{ inputs.api_url}}
-#        DEPLOY_KEY: ${{ inputs.deploy_key }}
-#        PROJECT: ${{ inputs.project }}
-#        PROJECT_ID: ${{ inputs.project_id }}
-#        IMAGE: ${{ inputs.image }}
-#        BRANCH: ${{ inputs.branch }}
-#        WAIT: ${{ inputs.wait }}
+    - id: main
+      run: node dist/index.js
+      shell: bash
+      env:
+        API_URL: ${{ inputs.api_url}}
+        DEPLOY_KEY: ${{ inputs.deploy_key }}
+        PROJECT: ${{ inputs.project }}
+        PROJECT_ID: ${{ inputs.project_id }}
+        IMAGE: ${{ inputs.image }}
+        BRANCH: ${{ inputs.branch }}
+        WAIT: ${{ inputs.wait }}
 
