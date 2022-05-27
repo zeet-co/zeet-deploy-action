@@ -26,7 +26,7 @@ inputs:
     default: "false"
 outputs:
   link:
-    value: ${{ steps.main.outputs.link }}
+    value: test
     description: "Link to deployment"
 runs:
   using: 'composite'
