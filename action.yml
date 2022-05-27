@@ -34,7 +34,7 @@ runs:
     - uses: actions/checkout@v3
       with:
         repository: zeet-co/zeet-deploy-action
-        branch: v2
+        ref: v2
     - uses: zeet-dev/action-zeet@main
       with:
         token: ${{ inputs.deploy_key }}
