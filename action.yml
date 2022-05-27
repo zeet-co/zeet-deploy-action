@@ -49,11 +49,11 @@ runs:
       run: node dist/index.js
       shell: bash
       env:
-        API_URL: ${{ inputs.api_url}}
-        DEPLOY_KEY: ${{ inputs.deploy_key }}
-        PROJECT: ${{ inputs.project }}
-        PROJECT_ID: ${{ inputs.project_id }}
-        IMAGE: ${{ inputs.image }}
-        BRANCH: ${{ inputs.branch }}
-        WAIT: ${{ inputs.wait }}
+        INPUT_API_URL: ${{ inputs.api_url}}
+        INPUT_DEPLOY_KEY: ${{ inputs.deploy_key }}
+        INPUT_PROJECT: ${{ inputs.project }}
+        INPUT_PROJECT_ID: ${{ inputs.project_id }}
+        INPUT_IMAGE: ${{ inputs.image }}
+        INPUT_BRANCH: ${{ inputs.branch }}
+        INPUT_WAIT: ${{ inputs.wait }}
 
