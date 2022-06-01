@@ -3,6 +3,14 @@
 Use this Github Action to deploy a project on [Zeet](https://zeet.co).
 
 ## Example
+Note: you probably want to enable Manual Deploys so that Zeet doesn't automatically rebuild your project on every commit:
+<details>
+<summary>Manual Deploy</summary>
+
+![Enabling Manual Deploy](./img.png)
+
+</details>
+
 ```yaml
     steps:
       - name: Deploy project
