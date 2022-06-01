@@ -9,10 +9,14 @@ async function main(): Promise<void> {
       core.getInput('follow') && `--follow=${core.getBooleanInput('wait')}`
     ]
 
-    await exec.exec('zeet deploy', [
-      core.getInput('project') || core.getInput('project_id'),
-      ...args.filter(a => a)
-    ])
+    await exec.exec(
+      'zeet deploy',
+      [
+        core.getInput('project') || core.getInput('project_id'),
+        ...args.filter(a => a)
+      ],
+      {failOnStdErr: true}
+    )
 
     const status = await exec.getExecOutput(
       'zeet status',
