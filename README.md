@@ -30,7 +30,7 @@ Note: you probably want to enable Manual Deploys so that Zeet doesn't automatica
 | project_name | The project name                                                                                                                                     | Yes (or use project_id)                     |
 | project_id   | The project id                                                                                                                                       | Yes (or use project_name)                   |
 | image        | The Docker image to run                                                                                                                              | No (defaults to building the latest commit) |
-| branch       | The branch to deploy to                                                                                                                              | No (default false)                          |
+| branch       | The branch to deploy to                                                                                                                              | No (defaults to the default branch)                          |
 | wait         | Wait for the deploy to finish, while streaming its output                                                                                            | No (default false)                          |
 
 ## Outputs
