@@ -43,7 +43,7 @@ function main() {
             const args = [
                 core.getInput('image') && `--image=${core.getInput('image')}`,
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,
-                core.getInput('follow') && `--follow=${core.getBooleanInput('wait')}`
+                core.getInput('wait') && `--follow=${core.getBooleanInput('wait')}`
             ];
             yield exec.exec('zeet deploy', [
                 core.getInput('project') || core.getInput('project_id'),

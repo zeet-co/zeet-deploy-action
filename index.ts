@@ -6,7 +6,7 @@ async function main(): Promise<void> {
     const args = [
       core.getInput('image') && `--image=${core.getInput('image')}`,
       core.getInput('branch') && `--branch=${core.getInput('branch')}`,
-      core.getInput('follow') && `--follow=${core.getBooleanInput('wait')}`
+      core.getInput('wait') && `--follow=${core.getBooleanInput('wait')}`
     ]
 
     await exec.exec(
