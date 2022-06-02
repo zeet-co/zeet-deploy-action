@@ -23,7 +23,7 @@ async function main(): Promise<void> {
       [core.getInput('project')],
       {silent: true}
     )
-    const links = status.stdout.match('(https?:\\/\\/zeet\\.co\\/repo[^\\s]+)')
+    const links = status.stdout.match(/https?:\/\/zeet\.co\/repo[^\s]+/)
     core.setOutput('link', links ? links[0] : 'Not Found')
   } catch (e: unknown) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
