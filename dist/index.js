@@ -45,6 +45,7 @@ function main() {
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,
                 `--follow=${core.getBooleanInput('wait')}`
             ];
+            core.info(`ARGS: ${JSON.stringify(args)}`);
             yield exec.exec('zeet deploy', [
                 core.getInput('project') || core.getInput('project_id'),
                 ...args.filter(a => a)

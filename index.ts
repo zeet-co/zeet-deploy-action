@@ -9,6 +9,8 @@ async function main(): Promise<void> {
       `--follow=${core.getBooleanInput('wait')}`
     ]
 
+    core.info(`ARGS: ${JSON.stringify(args)}`)
+
     await exec.exec(
       'zeet deploy',
       [
