@@ -39,8 +39,10 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - run: ls
+      shell: bash
     - id: main
-      run: npm run start
+      run: node "dist/index.js"
       shell: bash
       env:
         INPUT_PROJECT: ${{ inputs.project }}
