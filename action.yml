@@ -39,14 +39,6 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - run: ls
-      shell: bash
     - id: main
       run: node "dist/index.js"
       shell: bash
-      env:
-        INPUT_PROJECT: ${{ inputs.project }}
-        INPUT_PROJECT_ID: ${{ inputs.project_id }}
-        INPUT_IMAGE: ${{ inputs.image }}
-        INPUT_BRANCH: ${{ inputs.branch }}
-        INPUT_WAIT: ${{ inputs.wait }}

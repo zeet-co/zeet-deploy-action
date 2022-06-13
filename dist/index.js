@@ -43,9 +43,10 @@ function main() {
             const args = [
                 core.getInput('image') && `--image=${core.getInput('image')}`,
                 core.getInput('branch') && `--branch=${core.getInput('branch')}`,
-                `--follow=${core.getBooleanInput('wait') || 'false'}`
+                `--follow=${core.getBooleanInput('wait')}`
             ];
-            const deploy = yield exec.getExecOutput('zeet deploy', [
+            const deploy = yield exec.getExecOutput('zeet', [
+                'deploy',
                 core.getInput('project') || core.getInput('project_id'),
                 ...args.filter(a => a)
             ], { failOnStdErr: true });
