@@ -6,24 +6,20 @@ async function main(): Promise<void> {
     const args = [
       core.getInput('image') && `--image=${core.getInput('image')}`,
       core.getInput('branch') && `--branch=${core.getInput('branch')}`,
-      core.getInput('follow') && `--follow=${core.getBooleanInput('wait')}`
+      `--follow=${core.getBooleanInput('wait')}`
     ]
 
-    await exec.exec(
-      'zeet deploy',
+    const deploy = await exec.getExecOutput(
+      'zeet',
       [
+        'deploy',
         core.getInput('project') || core.getInput('project_id'),
         ...args.filter(a => a)
       ],
       {failOnStdErr: true}
     )
 
-    const status = await exec.getExecOutput(
-      'zeet status',
-      [core.getInput('project')],
-      {silent: true}
-    )
-    const links = status.stdout.match(/https?:\/\/zeet\.co\/repo[^\s]+/)
+    const links = deploy.stdout.match(/https?:\/\/zeet\.co\/repo[^\s]+/)
     core.setOutput('link', links ? links[0] : 'Not Found')
   } catch (e: unknown) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

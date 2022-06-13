@@ -30,28 +30,17 @@ outputs:
     value: ${{ steps.main.outputs.link }}
     description: "Link to deployment"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - uses: actions/checkout@v3
-      with:
-        repository: zeet-co/zeet-deploy-action
-        ref: v2
     - uses: zeet-dev/action-zeet@main
       with:
         token: ${{ inputs.deploy_key }}
         api_url: ${{ inputs.api_url }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-    - run: npm ci
-      shell: bash
     - id: main
-      run: node dist/index.js
-      shell: bash
-      env:
-        INPUT_PROJECT: ${{ inputs.project }}
-        INPUT_PROJECT_ID: ${{ inputs.project_id }}
-        INPUT_IMAGE: ${{ inputs.image }}
-        INPUT_BRANCH: ${{ inputs.branch }}
-        INPUT_WAIT: ${{ inputs.wait }}
-
+      uses: zeet-co/zeet-deploy-action/cli@v2
+      with:
+        project: ${{ inputs.project }}
+        project_id: ${{ inputs.project_id }}
+        image: ${{ inputs.image }}
+        branch: ${{ inputs.branch }}
+        wait: ${{ inputs.wait }}

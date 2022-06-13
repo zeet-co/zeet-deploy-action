@@ -1,0 +1,26 @@
+name: "Zeet Deploy"
+description: "Deploy your Project with Zeet"
+author: "Zeet"
+inputs:
+  project:
+    description: "Zeet project name"
+    required: false
+  project_id:
+    description: "Zeet project id"
+    required: false
+  image:
+    description: "Docker image to deploy"
+    required: false
+  branch:
+    description: "Branch name"
+    required: false
+  wait:
+    description: "Wait till the deploy finishes"
+    required: false
+    default: "false"
+outputs:
+  link:
+    description: "Link to deployment"
+runs:
+  using: "node16"
+  main: "../dist/index.js"
