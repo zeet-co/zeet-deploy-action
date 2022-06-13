@@ -2662,7 +2662,7 @@ function HeadersInstanceToPlainObject(headers) {
     });
     return o;
 }
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.ts.map
 
 /***/ }),
 
@@ -25603,4 +25603,4 @@ module.exports = require("zlib");
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.ts.map
