@@ -40,5 +40,12 @@ runs:
       with:
         node-version: 16
     - id: main
-      run: node "dist/index.js"
+      working-directory: ${{ github.action_path }}
+      run: npm run start
       shell: bash
+      with:
+        project: ${{ inputs.project }}
+        project_id: ${{ inputs.project_id }}
+        image: ${{ inputs.image }}
+        branch: ${{ inputs.branch }}
+        wait: ${{ inputs.wait }}
