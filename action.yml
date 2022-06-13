@@ -30,12 +30,8 @@ outputs:
     value: ${{ steps.main.outputs.link }}
     description: "Link to deployment"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - uses: actions/checkout@v3
-      with:
-        repository: zeet-co/zeet-deploy-action
-        ref: v2
     - uses: zeet-dev/action-zeet@main
       with:
         token: ${{ inputs.deploy_key }}
@@ -43,10 +39,8 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - run: npm ci
-      shell: bash
     - id: main
-      run: node dist/index.js
+      run: npm run start
       shell: bash
       env:
         INPUT_PROJECT: ${{ inputs.project }}
@@ -54,4 +48,3 @@ runs:
         INPUT_IMAGE: ${{ inputs.image }}
         INPUT_BRANCH: ${{ inputs.branch }}
         INPUT_WAIT: ${{ inputs.wait }}
-
