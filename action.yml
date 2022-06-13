@@ -37,7 +37,7 @@ runs:
         token: ${{ inputs.deploy_key }}
         api_url: ${{ inputs.api_url }}
     - id: main
-      uses: ./cli
+      uses: ${{ github.action_path }}/cli
       with:
         project: ${{ inputs.project }}
         project_id: ${{ inputs.project_id }}
