@@ -36,13 +36,8 @@ runs:
       with:
         token: ${{ inputs.deploy_key }}
         api_url: ${{ inputs.api_url }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
     - id: main
-      working-directory: ${{ github.action_path }}
-      run: npm run start
-      shell: bash
+      uses: ./cli
       with:
         project: ${{ inputs.project }}
         project_id: ${{ inputs.project_id }}
