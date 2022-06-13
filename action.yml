@@ -37,7 +37,7 @@ runs:
         token: ${{ inputs.deploy_key }}
         api_url: ${{ inputs.api_url }}
     - id: main
-      uses: ${{ github.action_path }}/cli
+      uses: zeet-co/zeet-deploy-action/cli@v2-dev
       with:
         project: ${{ inputs.project }}
         project_id: ${{ inputs.project_id }}
