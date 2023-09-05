@@ -25,6 +25,10 @@ inputs:
     description: "Wait till the deploy finishes"
     required: false
     default: "false"
+  allow_prereleases:
+    description: "If the latest version of the CLI is a prerelease, use it"
+    required: false
+    default: "false"
 outputs:
   link:
     value: ${{ steps.main.outputs.link }}
@@ -32,10 +36,11 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: zeet-dev/action-zeet@main
+    - uses: zeet-dev/action-zeet@prereleases
       with:
         token: ${{ inputs.deploy_key }}
         api_url: ${{ inputs.api_url }}
+        allow_prereleases: ${{ inputs.allow_prereleases }}
     - id: main
       uses: zeet-co/zeet-deploy-action/cli@v2
       with:
